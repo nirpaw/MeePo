@@ -6,4 +6,10 @@
     <string name="login_email_address">Email Address</string>
     <string name="forgot_your_password">Forgot your password ?</string>
     <string name="create_account">Create Account</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="reset_password_comment">By clicking RESET, you will receive an email to reset your password</string>
+    <string name="reset_btn">Reset</string>
+    <string name="reset_email_address">Email Address</string>
 </resources>

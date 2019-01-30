@@ -7,4 +7,22 @@
     android:id="@+id/main_app_bar"
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
+    <!--<de.hdodenhof.circleimageview.CircleImageView-->
+        <!--android:layout_width="30dp"-->
+        <!--android:layout_height="30dp"-->
+        <!--android:id="@+id/profile_image"-->
+        <!--android:visibility="gone"/>-->
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/username"-->
+        <!--android:layout_marginLeft="25dp"-->
+        <!--android:text="username"-->
+        <!--android:textColor="#fff"-->
+        <!--android:textStyle="bold"-->
+        <!--android:layout_marginStart="25dp"-->
+        <!--android:visibility="gone"/>-->
+
+
 </android.support.v7.widget.Toolbar>

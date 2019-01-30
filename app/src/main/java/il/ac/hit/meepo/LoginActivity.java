@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -20,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class LoginActivity extends AppCompatActivity {
 
     private TextInputEditText mEmail, mPassword;
+    private TextView mForgotPassword;
     private Button mLoginBtn;
     private Toolbar mToolbar;
 
@@ -39,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         mPassword = findViewById(R.id.login_password);
         mLoginBtn = findViewById(R.id.login_log_btn);
         mToolbar = findViewById(R.id.login_app_toolbar);
+        mForgotPassword = findViewById(R.id.login_forgot_password);
 
 
         setSupportActionBar(mToolbar);
@@ -59,6 +62,16 @@ public class LoginActivity extends AppCompatActivity {
                     mLogProgress.show();
                     login_user(email, password);
                 }
+
+            }
+        });
+
+
+
+        mForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this,ResetPasswordActivity.class));
 
             }
         });

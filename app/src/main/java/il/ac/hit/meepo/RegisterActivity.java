@@ -18,6 +18,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -27,6 +31,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     //Firebase Auth
     private FirebaseAuth mAuth;
+    private DatabaseReference reference;
+
 
     //ProgressDialog
     private ProgressDialog mRegProgress;
@@ -55,16 +61,17 @@ public class RegisterActivity extends AppCompatActivity {
         mCreateAccountBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String display_name = mFirstName.getText().toString();
+                String first_name = mFirstName.getText().toString();
+                String last_name = mLastName.getText().toString();
                 String email = mEmail.getText().toString();
                 String password = mPassword.getText().toString();
-                if(!TextUtils.isEmpty(display_name) && !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)){
+                if(!TextUtils.isEmpty(first_name) && !TextUtils.isEmpty(last_name) && !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)){
 
                     mRegProgress.setTitle("Registering User");
                     mRegProgress.setMessage("Pleas wait while we create your account !");
                     mRegProgress.setCanceledOnTouchOutside(false);
                     mRegProgress.show();
-                    register_user(display_name, email, password);
+                    register_user(first_name, last_name,email, password);
                 }
 
             }
@@ -73,7 +80,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    private void register_user(final String display_name, String email, String password) {
+    private void register_user(final String first_name, final String last_name , String email, String password) {
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
@@ -83,15 +90,33 @@ public class RegisterActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             mRegProgress.dismiss();
                             FirebaseUser user = mAuth.getCurrentUser();
-                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                    .setDisplayName(display_name).build();
+                            assert user != null;
+                            String userid = user.getUid();
 
-                            user.updateProfile(profileUpdates);
+                            reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
 
-                            Intent mainIntent = new Intent(RegisterActivity.this,MainActivity.class);
-                            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(mainIntent);
-                            finish();
+                            HashMap<String, String> hashMap = new HashMap<>();
+                            hashMap.put("id", userid);
+                            hashMap.put("firstName", first_name);
+                            hashMap.put("lastName", last_name);
+                            hashMap.put("imageURL", "default");
+                            hashMap.put("status", "offline");
+                            hashMap.put("gender", "male");
+                            hashMap.put("age", "28");
+                            hashMap.put("looking","female");
+                            hashMap.put("search", first_name.toLowerCase() + " " + last_name.toLowerCase());
+
+                            reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    Intent mainIntent = new Intent(RegisterActivity.this,MainActivity.class);
+                                    mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(mainIntent);
+                                    finish();
+                                }
+                            });
+
+
 
                         } else {
                             // If sign in fails, display a message to the user.
