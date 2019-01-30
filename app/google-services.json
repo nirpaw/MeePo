@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1045666531383",
+    "firebase_url": "https://meepo-5b9eb.firebaseio.com",
+    "project_id": "meepo-5b9eb",
+    "storage_bucket": "meepo-5b9eb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1045666531383:android:1850053f922bbf1e",
+        "android_client_info": {
+          "package_name": "il.ac.hit.meepo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1045666531383-ql06lto6hc0rua0s3jejpunj5nlukbqt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "il.ac.hit.meepo",
+            "certificate_hash": "1bc6786d71833895f9bba4b2544465648a9decb7"
+          }
+        },
+        {
+          "client_id": "1045666531383-3oo4bkt9m6v85on74iid4p25gvg2rfec.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuHXKohOTy64CfTwb1VhiOY-u7jsReHEM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1045666531383-3oo4bkt9m6v85on74iid4p25gvg2rfec.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
