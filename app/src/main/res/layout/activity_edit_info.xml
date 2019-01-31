@@ -34,13 +34,13 @@
 
     <ImageView
         android:id="@+id/editinfo_photo_2"
-        android:layout_width="112dp"
-        android:layout_height="121dp"
+        android:layout_width="115dp"
+        android:layout_height="118dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="11dp"
         android:layout_marginTop="63dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="20dp"
         android:layout_toEndOf="@+id/editinfo_main_photo"
         app:srcCompat="@drawable/photo_replace" />
 
@@ -76,6 +76,70 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="286dp"
         android:layout_marginEnd="6dp"
+        app:srcCompat="@drawable/add_photo_btn" />
+
+    <ImageView
+        android:id="@+id/edit_photo_4"
+        android:layout_width="113dp"
+        android:layout_height="115dp"
+        android:layout_below="@+id/editinfo_photo_3"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="20dp"
+        android:layout_toEndOf="@+id/edit_photo_6"
+        app:srcCompat="@drawable/photo_replace" />
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="51dp"
+        android:layout_height="28dp"
+
+        android:layout_alignEnd="@+id/editinfo_photo_2"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="412dp"
+        android:layout_marginEnd="-16dp"
+        android:layout_marginBottom="-7dp"
+        app:srcCompat="@drawable/add_photo_btn" />
+
+    <ImageView
+        android:id="@+id/edit_photo_5"
+        android:layout_width="115dp"
+        android:layout_height="111dp"
+        android:layout_below="@+id/editinfo_main_photo"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        app:srcCompat="@drawable/photo_replace" />
+
+    <ImageView
+        android:id="@+id/edit_photo_6"
+        android:layout_width="110dp"
+        android:layout_height="113dp"
+        android:layout_below="@+id/editinfo_edit_main_photo"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@+id/edit_photo_5"
+        app:srcCompat="@drawable/photo_replace" />
+
+    <ImageView
+        android:id="@+id/imageView12"
+        android:layout_width="51dp"
+        android:layout_height="28dp"
+        android:layout_alignBottom="@+id/edit_photo_4"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="92dp"
+        android:layout_marginBottom="-4dp"
+        app:srcCompat="@drawable/add_photo_btn" />
+
+    <ImageView
+        android:id="@+id/imageView11"
+        android:layout_width="51dp"
+        android:layout_height="28dp"
+        android:layout_alignEnd="@+id/editinfo_main_photo"
+        android:layout_alignBottom="@+id/edit_photo_6"
+        android:layout_marginEnd="-9dp"
+        android:layout_marginBottom="-4dp"
         app:srcCompat="@drawable/add_photo_btn" />
 
 
