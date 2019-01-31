@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,8 +36,10 @@ import com.google.firebase.storage.UploadTask;
 import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import il.ac.hit.meepo.EditInfoActivity;
 import il.ac.hit.meepo.Models.User;
 import il.ac.hit.meepo.R;
+import il.ac.hit.meepo.SettingsActivity;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -47,7 +50,10 @@ public class ProfileFragment extends Fragment {
 
 
     CircleImageView image_profile;
+    ImageView change_photo;
     TextView username;
+    TextView edit_info;
+    TextView settings;
 
     DatabaseReference reference;
     FirebaseUser fuser;
@@ -64,6 +70,9 @@ public class ProfileFragment extends Fragment {
 
         image_profile = view.findViewById(R.id.profile_image);
         username = view.findViewById(R.id.username);
+        change_photo = view.findViewById(R.id.edit_photo);
+        edit_info = view.findViewById(R.id.edit_info);
+        settings = view.findViewById(R.id.settings);
 
         storageReference = FirebaseStorage.getInstance().getReference("uploads");
 
@@ -74,7 +83,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-                username.setText(user.getFirstName());
+                username.setText(user.getFirstName()+ ", " + user.getAge());
                 if(user.getImageURL().equals("default")){
                     image_profile.setImageResource(R.mipmap.ic_launcher);
                 }else{
@@ -91,10 +100,24 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        image_profile.setOnClickListener(new View.OnClickListener() {
+        change_photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openImage();
+            }
+        });
+
+        edit_info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), EditInfoActivity.class));
+            }
+        });
+
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), SettingsActivity.class));
             }
         });
 

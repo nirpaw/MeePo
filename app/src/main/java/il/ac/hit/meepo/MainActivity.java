@@ -31,6 +31,7 @@ import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import il.ac.hit.meepo.Fragments.ChatsFragment;
+import il.ac.hit.meepo.Fragments.PlacesFragment;
 import il.ac.hit.meepo.Fragments.ProfileFragment;
 import il.ac.hit.meepo.Fragments.UsersFragment;
 import il.ac.hit.meepo.Models.Chat;
@@ -117,6 +118,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
+                viewPagerAdapter.addFragment(new ProfileFragment(), "Profile");
+
                 if(unread == 0){
                     viewPagerAdapter.addFragment(new ChatsFragment(),"Chats");
                 }
@@ -126,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 viewPagerAdapter.addFragment(new UsersFragment(), "Users");
-                viewPagerAdapter.addFragment(new ProfileFragment(), "Profile");
+                viewPagerAdapter.addFragment(new PlacesFragment(), "Places");
 
                 viewPager.setAdapter(viewPagerAdapter);
 
