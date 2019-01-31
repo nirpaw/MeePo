@@ -144,17 +144,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        if(currentUser == null){
-            sendToStart();
-        }
-
-    }
 
     private void sendToStart(){
 
@@ -176,7 +166,8 @@ public class MainActivity extends AppCompatActivity {
         super.onOptionsItemSelected(item);
         if(item.getItemId() == R.id.main_logout_btn){
             FirebaseAuth.getInstance().signOut();
-            sendToStart();
+            startActivity(new Intent(MainActivity.this, StartActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+            finish();
         }
         else if(item.getItemId() == R.id.main_settings_btn){
 
