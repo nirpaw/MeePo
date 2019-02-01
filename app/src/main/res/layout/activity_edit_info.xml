@@ -1,146 +1,307 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".EditInfoActivity">
+    android:layout_height="match_parent" >
 
-    <include layout="@layout/app_bar_layout"
-        android:id="@+id/edit_info_bar"/>
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
-    <ImageView
-        android:id="@+id/editinfo_main_photo"
-        android:layout_width="264dp"
-        android:layout_height="242dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="63dp"
-        app:srcCompat="@drawable/main_profile_photo" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="1100dp"
+            tools:context=".EditInfoActivity">
 
-    <ImageView
-        android:id="@+id/editinfo_edit_main_photo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="235dp"
-        android:layout_marginTop="281dp"
-        android:layout_marginEnd="138dp"
-        app:srcCompat="@drawable/edit_info_icon" />
+            <include
+                android:id="@+id/edit_info_bar"
+                layout="@layout/app_bar_layout" />
 
-    <ImageView
-        android:id="@+id/editinfo_photo_2"
-        android:layout_width="115dp"
-        android:layout_height="118dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="11dp"
-        android:layout_marginTop="63dp"
-        android:layout_marginEnd="20dp"
-        android:layout_toEndOf="@+id/editinfo_main_photo"
-        app:srcCompat="@drawable/photo_replace" />
+            <ImageView
+                android:id="@+id/editinfo_main_photo"
+                android:layout_width="264dp"
+                android:layout_height="242dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="63dp"
+                app:srcCompat="@drawable/main_profile_photo" />
 
-    <ImageView
-        android:id="@+id/imageView6"
-        android:layout_width="51dp"
-        android:layout_height="28dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="152dp"
-        android:layout_marginEnd="3dp"
-        app:srcCompat="@drawable/add_photo_btn" />
+            <ImageView
+                android:id="@+id/editinfo_edit_main_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="235dp"
+                android:layout_marginTop="281dp"
+                android:layout_marginEnd="138dp"
+                app:srcCompat="@drawable/edit_info_icon" />
 
-    <ImageView
-        android:id="@+id/editinfo_photo_3"
-        android:layout_width="115dp"
-        android:layout_height="118dp"
-        android:layout_below="@+id/editinfo_photo_2"
-        android:layout_alignBottom="@+id/editinfo_main_photo"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="11dp"
-        android:layout_marginTop="14dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="-3dp"
-        android:layout_toEndOf="@+id/editinfo_main_photo"
-        app:srcCompat="@drawable/photo_replace" />
+            <ImageView
+                android:id="@+id/editinfo_photo_2"
+                android:layout_width="115dp"
+                android:layout_height="118dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="11dp"
+                android:layout_marginTop="63dp"
+                android:layout_marginEnd="20dp"
+                android:layout_toEndOf="@+id/editinfo_main_photo"
+                app:srcCompat="@drawable/photo_replace" />
 
-    <ImageView
-        android:id="@+id/imageView8"
-        android:layout_width="51dp"
-        android:layout_height="28dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="286dp"
-        android:layout_marginEnd="6dp"
-        app:srcCompat="@drawable/add_photo_btn" />
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="51dp"
+                android:layout_height="28dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="152dp"
+                android:layout_marginEnd="3dp"
+                app:srcCompat="@drawable/add_photo_btn" />
 
-    <ImageView
-        android:id="@+id/edit_photo_4"
-        android:layout_width="113dp"
-        android:layout_height="115dp"
-        android:layout_below="@+id/editinfo_photo_3"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="11dp"
-        android:layout_marginTop="14dp"
-        android:layout_marginEnd="20dp"
-        android:layout_toEndOf="@+id/edit_photo_6"
-        app:srcCompat="@drawable/photo_replace" />
+            <ImageView
+                android:id="@+id/editinfo_photo_3"
+                android:layout_width="115dp"
+                android:layout_height="118dp"
+                android:layout_below="@+id/editinfo_photo_2"
+                android:layout_alignBottom="@+id/editinfo_main_photo"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="11dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="-3dp"
+                android:layout_toEndOf="@+id/editinfo_main_photo"
+                app:srcCompat="@drawable/photo_replace" />
 
-    <ImageView
-        android:id="@+id/imageView10"
-        android:layout_width="51dp"
-        android:layout_height="28dp"
+            <ImageView
+                android:id="@+id/imageView8"
+                android:layout_width="51dp"
+                android:layout_height="28dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="286dp"
+                android:layout_marginEnd="6dp"
+                app:srcCompat="@drawable/add_photo_btn" />
 
-        android:layout_alignEnd="@+id/editinfo_photo_2"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="412dp"
-        android:layout_marginEnd="-16dp"
-        android:layout_marginBottom="-7dp"
-        app:srcCompat="@drawable/add_photo_btn" />
+            <ImageView
+                android:id="@+id/edit_photo_4"
+                android:layout_width="113dp"
+                android:layout_height="115dp"
+                android:layout_below="@+id/editinfo_photo_3"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="11dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginEnd="10dp"
+                android:layout_toEndOf="@+id/edit_photo_6"
+                app:srcCompat="@drawable/photo_replace" />
 
-    <ImageView
-        android:id="@+id/edit_photo_5"
-        android:layout_width="115dp"
-        android:layout_height="111dp"
-        android:layout_below="@+id/editinfo_main_photo"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="15dp"
-        app:srcCompat="@drawable/photo_replace" />
+            <ImageView
+                android:id="@+id/imageView10"
+                android:layout_width="51dp"
+                android:layout_height="28dp"
 
-    <ImageView
-        android:id="@+id/edit_photo_6"
-        android:layout_width="110dp"
-        android:layout_height="113dp"
-        android:layout_below="@+id/editinfo_edit_main_photo"
-        android:layout_marginStart="22dp"
-        android:layout_marginTop="0dp"
-        android:layout_toEndOf="@+id/edit_photo_5"
-        app:srcCompat="@drawable/photo_replace" />
+                android:layout_alignEnd="@+id/editinfo_photo_2"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="410dp"
+                android:layout_marginEnd="-16dp"
+                android:layout_marginBottom="-7dp"
+                app:srcCompat="@drawable/add_photo_btn" />
 
-    <ImageView
-        android:id="@+id/imageView12"
-        android:layout_width="51dp"
-        android:layout_height="28dp"
-        android:layout_alignBottom="@+id/edit_photo_4"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="92dp"
-        android:layout_marginBottom="-4dp"
-        app:srcCompat="@drawable/add_photo_btn" />
+            <ImageView
+                android:id="@+id/edit_photo_5"
+                android:layout_width="115dp"
+                android:layout_height="111dp"
+                android:layout_below="@+id/editinfo_main_photo"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="15dp"
+                app:srcCompat="@drawable/photo_replace" />
 
-    <ImageView
-        android:id="@+id/imageView11"
-        android:layout_width="51dp"
-        android:layout_height="28dp"
-        android:layout_alignEnd="@+id/editinfo_main_photo"
-        android:layout_alignBottom="@+id/edit_photo_6"
-        android:layout_marginEnd="-9dp"
-        android:layout_marginBottom="-4dp"
-        app:srcCompat="@drawable/add_photo_btn" />
+            <ImageView
+                android:id="@+id/edit_photo_6"
+                android:layout_width="110dp"
+                android:layout_height="113dp"
+                android:layout_below="@+id/editinfo_edit_main_photo"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="0dp"
+                android:layout_toEndOf="@+id/edit_photo_5"
+                app:srcCompat="@drawable/photo_replace" />
 
+            <ImageView
+                android:id="@+id/imageView12"
+                android:layout_width="51dp"
+                android:layout_height="28dp"
+                android:layout_alignBottom="@+id/edit_photo_4"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="92dp"
+                android:layout_marginBottom="-4dp"
+                app:srcCompat="@drawable/add_photo_btn" />
+
+            <ImageView
+                android:id="@+id/imageView11"
+                android:layout_width="51dp"
+                android:layout_height="28dp"
+                android:layout_alignEnd="@+id/editinfo_main_photo"
+                android:layout_alignBottom="@+id/edit_photo_6"
+                android:layout_marginEnd="-9dp"
+                android:layout_marginBottom="-4dp"
+                app:srcCompat="@drawable/add_photo_btn" />
+
+            <TextView
+                android:id="@+id/edit_info_about_headline"
+                android:layout_width="89dp"
+                android:layout_height="31dp"
+                android:layout_below="@+id/edit_photo_5"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="305dp"
+                android:layout_marginBottom="252dp"
+                android:text="@string/editinfo_about_headline"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/edit_info_about_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edit_photo_6"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="68dp"
+                android:layout_marginEnd="14dp"
+                android:layout_marginBottom="96dp"
+                android:ems="10"
+                android:inputType="textMultiLine"
+                android:text="Contrary to popular belief\nLorem Ipsum is not simply random text.\nIt has roots in a piece of classical Latin literature from 45 making it over 2000 years old. Richard McClintock" />
+
+            <TextView
+                android:id="@+id/edit_info_work_title"
+                android:layout_width="166dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/edit_photo_5"
+                android:layout_alignStart="@+id/edit_info_about_headline"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="208dp"
+                android:layout_marginEnd="225dp"
+                android:layout_marginBottom="0dp"
+                android:text="Current Work"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/edit_info_work_text"
+                android:layout_width="372dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edit_photo_6"
+                android:layout_alignStart="@+id/edit_info_about_text"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="239dp"
+                android:layout_marginEnd="24dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="CEO" />
+
+            <TextView
+                android:id="@+id/edit_info_age_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edit_photo_6"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="21dp"
+                android:layout_marginTop="295dp"
+                android:layout_marginEnd="324dp"
+                android:layout_marginBottom="59dp"
+                android:text="Age"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/edit_info_age_text"
+                android:layout_width="368dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edit_photo_6"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="330dp"
+                android:layout_marginEnd="25dp"
+                android:ems="10"
+                android:inputType="number"
+                tools:text="28" />
+
+            <TextView
+                android:id="@+id/edit_info_gender_title"
+                android:layout_width="90dp"
+                android:layout_height="28dp"
+                android:layout_alignTop="@+id/edit_info_work_title"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="176dp"
+                android:layout_marginEnd="305dp"
+                android:layout_marginBottom="272dp"
+                android:text="Gender"
+                android:textSize="20sp" />
+
+            <RadioGroup
+                android:id="@+id/edit_info_gender_group"
+                android:layout_width="371dp"
+                android:layout_height="62dp"
+                android:layout_below="@+id/edit_photo_6"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="424dp"
+                android:layout_marginEnd="25dp"
+                android:checkedButton="@id/edit_info_gender_radio_male"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/edit_info_gender_radio_male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="male"
+                    android:textSize="18sp" />
+
+                <RadioButton
+                    android:id="@+id/edit_info_gender_radio_female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="female"
+                    android:textSize="18sp" />
+
+                <RadioButton
+                    android:id="@+id/edit_info_gender_radio_other"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="other"
+                    android:textSize="18sp" />
+            </RadioGroup>
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="118dp"
+                android:layout_alignTop="@+id/edit_info_about_text"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="129dp"
+                android:layout_marginTop="426dp"
+                android:layout_marginEnd="128dp"
+                android:layout_marginBottom="0dp"
+                android:background="@null"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/save_t2" />
+
+
+        </RelativeLayout>
+
+    </ScrollView>
 
 </RelativeLayout>

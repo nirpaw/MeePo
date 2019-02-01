@@ -12,4 +12,5 @@
     <string name="reset_password_comment">By clicking RESET, you will receive an email to reset your password</string>
     <string name="reset_btn">Reset</string>
     <string name="reset_email_address">Email Address</string>
+    <string name="editinfo_about_headline">About</string>
 </resources>
