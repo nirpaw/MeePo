@@ -10,6 +10,176 @@
     <include layout="@layout/app_bar_layout"
         android:id="@+id/settings_bar"/>
 
+    <TextView
+        android:id="@+id/settings_discovery_settings_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/settings_bar"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="41dp"
+        android:layout_marginEnd="220dp"
+        android:text="Discovery Settings"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/settings_discovery_settings_location"
+        android:layout_width="346dp"
+        android:layout_height="32dp"
+        android:layout_below="@+id/settings_discovery_settings_title"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="32dp"
+        android:text="My Current Locations"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/settings_settings_show"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/settings_discovery_settings_location"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="304dp"
+        android:text="Show Me"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/settings_male_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/settings_settings_show"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="34dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="179dp"
+        android:layout_toStartOf="@+id/settings_male_sw"
+        android:text="Men"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/settings_female_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/settings_male_title"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="181dp"
+        android:layout_toStartOf="@+id/settings_female_sw"
+        android:text="Women"
+        android:textSize="18sp" />
+
+    <Switch
+        android:id="@+id/settings_male_sw"
+        android:layout_width="52dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/settings_settings_show"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="59dp" />
+
+    <Switch
+        android:id="@+id/settings_female_sw"
+        android:layout_width="51dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/settings_male_sw"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="59dp"
+        android:checked="true" />
+
+    <TextView
+        android:id="@+id/settings_search_distance_title"
+        android:layout_width="201dp"
+        android:layout_height="38dp"
+        android:layout_below="@+id/settings_female_title"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="95dp"
+        android:layout_toStartOf="@+id/settings_search_distance_text"
+        android:text="Search Distance"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/settings_search_distance_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/settings_female_title"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="46dp"
+        android:text="8 mil."
+        android:textSize="18sp" />
+
+    <SeekBar
+        android:id="@+id/settings_search_distance_seekbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/settings_search_distance_title"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="26dp"
+        android:progress="8" />
+
+    <TextView
+        android:id="@+id/settings_show_age_title"
+        android:layout_width="124dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/settings_search_distance_seekbar"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="159dp"
+        android:layout_toStartOf="@+id/settings_search_age_range"
+        android:text="Show Ages"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/settings_search_age_range"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/settings_search_distance_seekbar"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="47dp"
+        android:text="18 - 24"
+        android:textSize="18sp" />
+
+    <SeekBar
+        android:id="@+id/settings_search_age_range_seekbar"
+        android:layout_width="wrap_content"
+        android:layout_height="33dp"
+        android:layout_below="@+id/settings_show_age_title"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="27dp" />
+
+    <ImageButton
+        android:id="@+id/settings_save_btn"
+        android:layout_width="100dp"
+        android:layout_height="120dp"
+        android:layout_below="@+id/settings_search_age_range_seekbar"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="126dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="131dp"
+        android:layout_marginBottom="0dp"
+        android:background="@null"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/save_t2" />
+
 
 
 </RelativeLayout>

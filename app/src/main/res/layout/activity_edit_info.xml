@@ -233,7 +233,7 @@
                 android:layout_marginEnd="25dp"
                 android:ems="10"
                 android:inputType="number"
-                tools:text="28" />
+                android:text="28" />
 
             <TextView
                 android:id="@+id/edit_info_gender_title"
@@ -285,9 +285,9 @@
             </RadioGroup>
 
             <ImageButton
-                android:id="@+id/imageButton"
-                android:layout_width="wrap_content"
-                android:layout_height="118dp"
+                android:id="@+id/edit_info_save_btn"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
                 android:layout_alignTop="@+id/edit_info_about_text"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
