@@ -1,9 +1,15 @@
 package il.ac.hit.meepo;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -11,6 +17,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.api.LogDescriptor;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -50,6 +58,11 @@ public class MainActivity extends AppCompatActivity {
 
      TabLayout tabLayout;
      ViewPager viewPager;
+    LocationManager locationManager;
+    private double userLat;
+    private  double userLng;
+    static final int REQUEST_LOCATION = 9002;
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +70,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
-
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        getLocation();
 
         tabLayout = findViewById(R.id.tab_layout);
         viewPager = findViewById(R.id.view_pager);
@@ -129,7 +143,17 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 viewPagerAdapter.addFragment(new UsersFragment(), "Users");
-                viewPagerAdapter.addFragment(new PlacesFragment(), "Places");
+                PlacesFragment placesFragment = new PlacesFragment();
+                Bundle bundle = new Bundle();
+                Log.d(TAG, "onDataChange: ");
+                bundle.putDouble("userlat", userLat);
+                bundle.putDouble("userlat", userLng);
+                placesFragment.setArguments(bundle);
+
+
+                viewPagerAdapter.addFragment(placesFragment, "Places");
+
+
 
                 viewPager.setAdapter(viewPagerAdapter);
 
@@ -234,6 +258,35 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
 
        status("offline");
+    }
+
+    void getLocation() {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        if(location != null){
+            userLat = location.getLatitude();
+            userLng = location.getLongitude();
+            Log.d(TAG, "Location Main "+userLat+", "+userLng);
+        }
+    }
+
+    public double getLat(){
+        return userLat;
+    }
+
+    public double getLng(){
+        return userLng;
     }
 
 

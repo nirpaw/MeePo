@@ -3,6 +3,7 @@ package il.ac.hit.meepo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.WindowManager;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,6 +27,10 @@ public class EditInfoActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Edit Info");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        hideSoftKeyboard();
+    }
 
+    private void hideSoftKeyboard(){
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 }

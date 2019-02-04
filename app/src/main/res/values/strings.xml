@@ -13,4 +13,5 @@
     <string name="reset_btn">Reset</string>
     <string name="reset_email_address">Email Address</string>
     <string name="editinfo_about_headline">About</string>
+    <string name="google_maps_api_key">AIzaSyDNAa6mE5f24Tg3ZuhEWf-T-uJUC1efSF8</string>
 </resources>

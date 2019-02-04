@@ -3,11 +3,13 @@ package il.ac.hit.meepo;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -28,6 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputEditText mFirstName, mEmail, mPassword, mLastName;
     private Button mCreateAccountBtn;
     private Toolbar mToolbar;
+    private static final String TAG = "RegisterActivity";
 
     //Firebase Auth
     private FirebaseAuth mAuth;
@@ -73,6 +76,10 @@ public class RegisterActivity extends AppCompatActivity {
                     mRegProgress.show();
                     register_user(first_name, last_name,email, password);
                 }
+                else{
+                    Snackbar.make(findViewById(R.id.reg_layout),"Fill all fields please",Snackbar.LENGTH_SHORT).show();
+
+                }
 
             }
         });
@@ -109,10 +116,15 @@ public class RegisterActivity extends AppCompatActivity {
                             reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
                                     Intent mainIntent = new Intent(RegisterActivity.this,MainActivity.class);
                                     mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(mainIntent);
                                     finish();
+                                    }
+                                    else{
+                                        Log.d(TAG, "onComplete: Something Get Wrong!");
+                                    }
                                 }
                             });
 
@@ -121,6 +133,7 @@ public class RegisterActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             mRegProgress.hide();
+                            Log.d(TAG, "onComplete: Fails to display a message!");
                             Toast.makeText(RegisterActivity.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
 
                         }
