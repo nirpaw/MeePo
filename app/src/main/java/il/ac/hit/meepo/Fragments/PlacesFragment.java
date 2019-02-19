@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -75,6 +76,7 @@ public class PlacesFragment extends Fragment {
         userLat = activity.getLat();
         userLng = activity.getLng();
         // Inflate the layout for this fragment
+        Log.d(TAG, "onCreateView: Place: " + userLat + ", "+ userLng);
         View view = inflater.inflate(R.layout.fragment_places, container, false);
 
         recyclerView = view.findViewById(R.id.rv_places);
@@ -190,9 +192,18 @@ public class PlacesFragment extends Fragment {
                             reference = FirebaseDatabase.getInstance().getReference("VisitedPlaces");
                             reference.child(pressedPlace.getmPlaceId()).setValue(pressedPlace);
                         }
-                        Intent intent = new Intent(getActivity(), InPlaceActivity.class);
-                        intent.putExtra("CurrentPlace", pressedPlace);
-                        startActivity(intent);
+                        //Intent intent = new Intent(getActivity(), InPlaceActivity.class);
+                        //intent.putExtra("CurrentPlace", pressedPlace);
+                        //startActivity(intent);
+
+                        InPlaceFragment inPlaceFragment = new InPlaceFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("currentPlace", pressedPlace);
+                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                        transaction.replace(R.id.container_frame, inPlaceFragment);
+                        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
                     }
                 });
                 recyclerView.setAdapter(placesAdapter);

@@ -39,6 +39,7 @@ import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import il.ac.hit.meepo.Fragments.ChatsFragment;
+import il.ac.hit.meepo.Fragments.ContainerFragment;
 import il.ac.hit.meepo.Fragments.PlacesFragment;
 import il.ac.hit.meepo.Fragments.ProfileFragment;
 import il.ac.hit.meepo.Fragments.UsersFragment;
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         mAuth = FirebaseAuth.getInstance();
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -141,8 +143,10 @@ public class MainActivity extends AppCompatActivity {
                 bundle.putDouble("userlat", userLng);
                 placesFragment.setArguments(bundle);
 
+                ContainerFragment containerFragment = new ContainerFragment();
 
-                viewPagerAdapter.addFragment(placesFragment, "Places");
+
+                viewPagerAdapter.addFragment(containerFragment, "Places");
 
                 if(unread == 0){
                     viewPagerAdapter.addFragment(new ChatsFragment(),"Chats");
