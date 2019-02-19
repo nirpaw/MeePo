@@ -134,15 +134,6 @@ public class MainActivity extends AppCompatActivity {
 
                 viewPagerAdapter.addFragment(new ProfileFragment(), "Profile");
 
-                if(unread == 0){
-                    viewPagerAdapter.addFragment(new ChatsFragment(),"Chats");
-                }
-                else{
-                    viewPagerAdapter.addFragment(new ChatsFragment(),"("+unread+") Chats");
-
-                }
-
-                viewPagerAdapter.addFragment(new UsersFragment(), "Users");
                 PlacesFragment placesFragment = new PlacesFragment();
                 Bundle bundle = new Bundle();
                 Log.d(TAG, "onDataChange: ");
@@ -153,10 +144,21 @@ public class MainActivity extends AppCompatActivity {
 
                 viewPagerAdapter.addFragment(placesFragment, "Places");
 
+                if(unread == 0){
+                    viewPagerAdapter.addFragment(new ChatsFragment(),"Chats");
+                }
+                else{
+                    viewPagerAdapter.addFragment(new ChatsFragment(),"("+unread+") Chats");
+
+                }
+
+               // viewPagerAdapter.addFragment(new UsersFragment(), "Users");
+
+
 
 
                 viewPager.setAdapter(viewPagerAdapter);
-
+                viewPager.setCurrentItem(1);
                 tabLayout.setupWithViewPager(viewPager);
             }
 

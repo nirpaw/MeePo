@@ -1,9 +1,10 @@
 package il.ac.hit.meepo.Models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Place {
+public class Place implements Serializable {
     private String mPlaceName;
     private String mPlaceId;
     private double mLat;
