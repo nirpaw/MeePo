@@ -217,6 +217,7 @@ public class MainActivity extends AppCompatActivity {
             this.fragments = new ArrayList<>();
             this.titles = new ArrayList<>();
         }
+
         @Override
         public Fragment getItem(int i) {
             return fragments.get(i);
