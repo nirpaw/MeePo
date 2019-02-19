@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -36,6 +37,7 @@ import il.ac.hit.meepo.Adapters.PlacesAdapter;
 import il.ac.hit.meepo.Adapters.UsersAdapter;
 import il.ac.hit.meepo.Helpers.Function;
 import il.ac.hit.meepo.InPlaceActivity;
+import il.ac.hit.meepo.InPlaceFragment;
 import il.ac.hit.meepo.MainActivity;
 import il.ac.hit.meepo.Models.Chatlist;
 import il.ac.hit.meepo.Models.Place;
@@ -76,7 +78,6 @@ public class PlacesFragment extends Fragment {
         userLng = activity.getLng();
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_places, container, false);
-
         recyclerView = view.findViewById(R.id.rv_places);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
@@ -190,6 +191,8 @@ public class PlacesFragment extends Fragment {
                             reference = FirebaseDatabase.getInstance().getReference("VisitedPlaces");
                             reference.child(pressedPlace.getmPlaceId()).setValue(pressedPlace);
                         }
+
+
                         Intent intent = new Intent(getActivity(), InPlaceActivity.class);
                         intent.putExtra("CurrentPlace", pressedPlace);
                         startActivity(intent);
