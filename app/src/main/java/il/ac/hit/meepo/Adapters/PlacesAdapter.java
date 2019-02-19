@@ -21,11 +21,21 @@ import il.ac.hit.meepo.R;
 public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlacesViewHolder>{
     private List<Place> places;
     private Context context;
+    private IPlaceAdapterListener listener;
 
     public PlacesAdapter(List<Place> places , Context context) {
         this.places = places;
         this.context = context;
     }
+
+    public void setClickListener(IPlaceAdapterListener clickListener) {
+        listener = clickListener;
+    }
+
+    public interface IPlaceAdapterListener{
+        void OnPlaceClicked(int position, View view);
+    }
+
     public class PlacesViewHolder extends RecyclerView.ViewHolder {
         TextView textViewName;
         ImageView imgeViewPlacePoto;
@@ -33,6 +43,16 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlacesView
             super(itemView);
             textViewName = itemView.findViewById(R.id.tv_place_name);
             imgeViewPlacePoto = itemView.findViewById(R.id.iv_placePicture);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener != null){
+                        listener.OnPlaceClicked(getAdapterPosition(),v);
+                    }
+                }
+            });
+
+
         }
     }
 

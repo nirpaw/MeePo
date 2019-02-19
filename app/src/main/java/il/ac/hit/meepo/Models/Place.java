@@ -1,20 +1,31 @@
 package il.ac.hit.meepo.Models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Place {
     private String mPlaceName;
     private String mPlaceId;
     private double mLat;
     private double mLng;
-    private int mVistorCounter = 0;
     private String PhotoRefference;
+    private List<User> mInPlaceUsers;
 
-    public Place(String mPlaceName, String mPlaceId, double mLat, double mLng, String photoRefference) {
+    public Place(String mPlaceName, String mPlaceId, double mLat, double mLng, String photoRefference, List<User> mInPlaceUsers) {
         this.mPlaceName = mPlaceName;
         this.mPlaceId = mPlaceId;
         this.mLat = mLat;
         this.mLng = mLng;
-        PhotoRefference = photoRefference;
-        mVistorCounter++;
+        this.PhotoRefference = photoRefference;
+        this.mInPlaceUsers = new ArrayList<>();
+    }
+
+    public List<User> getmInPlaceUsers() {
+        return mInPlaceUsers;
+    }
+
+    public void setmInPlaceUsers(List<User> mInPlaceUsers) {
+        this.mInPlaceUsers = mInPlaceUsers;
     }
 
     public Place() {
@@ -52,19 +63,23 @@ public class Place {
         this.mLng = mLng;
     }
 
-    public int getmVistorCounter() {
-        return mVistorCounter;
-    }
-
-    public void setmVistorCounter(int mVistorCounter) {
-        this.mVistorCounter = mVistorCounter;
-    }
-
     public String getPhotoRefference() {
         return PhotoRefference;
     }
 
     public void setPhotoRefference(String photoRefference) {
         PhotoRefference = photoRefference;
+    }
+
+    @Override
+    public String toString() {
+        return "Place{" +
+                "mPlaceName='" + mPlaceName + '\'' +
+                ", mPlaceId='" + mPlaceId + '\'' +
+                ", mLat=" + mLat +
+                ", mLng=" + mLng +
+                ", PhotoRefference='" + PhotoRefference + '\'' +
+                ", mInPlaceUsers=" + mInPlaceUsers +
+                '}';
     }
 }

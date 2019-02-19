@@ -1,8 +1,10 @@
 package il.ac.hit.meepo.Fragments;
 
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +15,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,26 +56,19 @@ public class PlacesFragment extends Fragment {
 
     private List<Chatlist> usersList;
 
+    List<Place> listOfFoundedPlaces = new ArrayList<>();
+    List<Place> listOfVisitedPlaces = new ArrayList<>();
 
-
-
-
-
-    List<Place> listOfPlaces = new ArrayList<>();
 
     double userLat;
     double userLng;
-
+    DatabaseReference mPlaceReference;
 
     private static final String TAG = "PlacesFragment";
-
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         MainActivity activity = (MainActivity) getActivity();
         userLat = activity.getLat();
         userLng = activity.getLng();
@@ -82,8 +81,25 @@ public class PlacesFragment extends Fragment {
 
         Log.d(TAG, "onCreateView: Location "+ userLat+ ", "+userLng);
 
+        mPlaceReference = FirebaseDatabase.getInstance().getReference("VisitedPlaces");
+        mPlaceReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot: dataSnapshot.getChildren()
+                     ) {
+                    Place place = snapshot.getValue(Place.class);
+                    listOfVisitedPlaces.add(place);
+                    Log.d(TAG, "onVisitedPlaces: "+place.toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         mTask = new DownloadPlaces();
-        listOfPlaces.clear();
+        listOfFoundedPlaces.clear();
         mTask.execute();
 
 //        ImageView mapImage = view.findViewById(R.id.iv_map);
@@ -104,6 +120,7 @@ public class PlacesFragment extends Fragment {
 
         protected String doInBackground(String... args) {
             String placesUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+/*"32.0811212,34.7737281"+"32.063618,34.7727441"*/userLat+","+userLng  +"&types=bar"+"&radius=4000&key=" +getResources().getString(R.string.google_maps_api_key);
+            //String placesUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+"32.0811212,34.7737281"+"&types=bar"+"&radius=4000&key=" +getResources().getString(R.string.google_maps_api_key);
             Log.d(TAG, "debugUrl : "+placesUrl);
             String xml = "";
             String urlParameters = "";
@@ -126,7 +143,6 @@ public class PlacesFragment extends Fragment {
                         String name = jsonObject.optString("name").toString();
                         String place_id = jsonObject.optString("place_id").toString();
                         String photo_reference = null;
-
                         try {
                             // get photo reff
                             JSONArray photos = (JSONArray) jsonObject.get("photos");
@@ -146,7 +162,9 @@ public class PlacesFragment extends Fragment {
                         double lat = Location.getDouble("lat");
                         double lng = Location.getDouble("lng");
                         Log.d(TAG, "loactionPlace : "+ lng +",  "+ lat);
-                        listOfPlaces.add(new Place(name, place_id, lat, lng,photo_reference));
+//                        mPlaceReference = FirebaseDatabase.getInstance().getReference("Places").child(place_id);
+                        listOfFoundedPlaces.add(new Place(name, place_id, lat, lng,photo_reference, null));
+//                        mPlaceReference.setValue(listOfFoundedPlaces.get(listOfFoundedPlaces.size()-1));
                     }
                 } catch (JSONException e) {
                     Toast.makeText(getContext().getApplicationContext(), "Unexpected error: " +e.toString(), Toast.LENGTH_LONG).show();
@@ -154,7 +172,24 @@ public class PlacesFragment extends Fragment {
                 Log.d(TAG, "BEFORE SORT: "+ printPlaces());
 
                 sortListByDistance();
-                PlacesAdapter placesAdapter = new PlacesAdapter(listOfPlaces, getContext());
+                PlacesAdapter placesAdapter = new PlacesAdapter(listOfFoundedPlaces, getContext());
+                placesAdapter.setClickListener(new PlacesAdapter.IPlaceAdapterListener() {
+                    @Override
+                    public void OnPlaceClicked(int position, View view) {
+                        Place pressedPlace = listOfFoundedPlaces.get(position);
+                        boolean placeIsExist = false;
+                        for(Place place : listOfVisitedPlaces){
+                            if( pressedPlace.getmPlaceId() == place.getmPlaceId()){
+                                placeIsExist = true;
+                            }
+                        }
+                        if(!placeIsExist){
+                            listOfVisitedPlaces.add(pressedPlace);
+                            reference = FirebaseDatabase.getInstance().getReference("VisitedPlaces");
+                            reference.child(pressedPlace.getmPlaceId()).setValue(pressedPlace);
+                        }
+                    }
+                });
                 recyclerView.setAdapter(placesAdapter);
 
 
@@ -168,7 +203,7 @@ public class PlacesFragment extends Fragment {
 
     protected void sortListByDistance(){
 
-        Collections.sort(listOfPlaces, new Comparator<Place>(){
+        Collections.sort(listOfFoundedPlaces, new Comparator<Place>(){
             public int compare(Place p1, Place p2)
             {
                 return calcDistance(p1) > calcDistance(p2) ? 1 : -1;
@@ -179,7 +214,7 @@ public class PlacesFragment extends Fragment {
 
     String printPlaces(){ // FOR DEBUG
         StringBuilder sb = new StringBuilder();
-        for (Place item: listOfPlaces
+        for (Place item: listOfFoundedPlaces
         ) {
             sb.append(item.getmPlaceName());
             sb.append(" -- dist: " + calcDistance(item));
