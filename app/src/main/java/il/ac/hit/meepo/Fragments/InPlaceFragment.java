@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ public class InPlaceFragment extends Fragment {
     RecyclerView recyclerView;
     UserInPlaceAdapter userInPlaceAdapter;
     List<User> listOfUsersInPlaceNow;
+    private static final String TAG = "InPlaceFragment";
 
     public InPlaceFragment() {
         // Required empty public constructor
@@ -54,6 +56,7 @@ public class InPlaceFragment extends Fragment {
             public void onUserClicked(int position, View view) {
                 Intent intent = new Intent(getContext(), OtherUserProfileActivity.class);
                 intent.putExtra("user_object" ,listOfUsersInPlaceNow.get(position));
+                startActivity(intent);
             }
 
             @Override
