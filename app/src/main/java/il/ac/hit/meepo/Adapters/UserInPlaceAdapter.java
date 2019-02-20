@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -14,36 +13,40 @@ import il.ac.hit.meepo.Models.User;
 import il.ac.hit.meepo.R;
 
 public class UserInPlaceAdapter extends RecyclerView.Adapter<UserInPlaceAdapter.UserInPlaceViewHolder> {
-    List<User> movies;
-    MyMovieListener listener;
+    List<User> users;
+    MyUserInPlaceListener listener;
 
 
 
-    interface MyMovieListener {
-        void onMovieClicked(int position, View view);
-        void onMovieLongClicked(int position, View view);
+    public interface MyUserInPlaceListener {
+        void onUserClicked(int position, View view);
+        void onUserLongClicked(int position, View view);
     }
 
-    public void setListener(MyMovieListener listener){
+    public void setListener(MyUserInPlaceListener listener){
         this.listener = listener;
     }
 
-    public UserInPlaceAdapter(List<User> movies) { this.movies = movies; }
+    public UserInPlaceAdapter(List<User> userList) { this.users = userList; }
 
     public class UserInPlaceViewHolder extends RecyclerView.ViewHolder{
 
         TextView nameTv;
+        TextView ageTv;
+        TextView genderTv;
 //        ImageView imageIv;
 
         public UserInPlaceViewHolder(@NonNull View itemView) {
             super(itemView);
-            nameTv = itemView.findViewById(R.id.username);
+            nameTv = itemView.findViewById(R.id.tv_user_first_name);
+            ageTv = itemView.findViewById(R.id.tv_user_age);
+            genderTv = itemView.findViewById(R.id.tv_user_gendet);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(listener != null){
-                        listener.onMovieClicked(getAdapterPosition(),v);
+                        listener.onUserClicked(getAdapterPosition(),v);
                     }
                 }
             });
@@ -52,7 +55,7 @@ public class UserInPlaceAdapter extends RecyclerView.Adapter<UserInPlaceAdapter.
                 @Override
                 public boolean onLongClick(View v) {
                     if(listener != null){
-                        listener.onMovieLongClicked(getAdapterPosition(),v);
+                        listener.onUserLongClicked(getAdapterPosition(),v);
                     }
                     return false;
                 }
@@ -62,8 +65,10 @@ public class UserInPlaceAdapter extends RecyclerView.Adapter<UserInPlaceAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull UserInPlaceViewHolder userInPlaceViewHolder, int i) {
-        User user = movies.get(i);
-        userInPlaceViewHolder.nameTv.setText(user.getFirstName() + " " + user.getLastName());
+        User user = users.get(i);
+        userInPlaceViewHolder.nameTv.setText(user.getFirstName());
+        userInPlaceViewHolder.ageTv.setText(user.getAge());
+        userInPlaceViewHolder.genderTv.setText(user.getGender());
     }
 
     @NonNull
@@ -78,7 +83,7 @@ public class UserInPlaceAdapter extends RecyclerView.Adapter<UserInPlaceAdapter.
 
     @Override
     public int getItemCount() {
-        return movies.size();
+        return users.size();
     }
 
     @Override
