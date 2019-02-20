@@ -1,35 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragment_in_place"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.UsersFragment">
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_requested"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:orientation="horizontal"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="40dp"
-        android:layout_below="@+id/rv_requested"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/recycler_view"/>
+    android:orientation="vertical"
+    tools:context=".Fragments.InPlaceFragment">
 
 
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
-
-</RelativeLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:text="InPlace Fragment" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="back"
+        android:id="@+id/back_btn"/>
+</LinearLayout>
