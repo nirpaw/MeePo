@@ -2,8 +2,6 @@ package il.ac.hit.meepo.Models;
 
 public class User {
 
-
-
     private String id;
     private String firstName;
     private String lastName;
