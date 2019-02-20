@@ -7,7 +7,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -191,8 +190,11 @@ public class PlacesFragment extends Fragment {
                             reference = FirebaseDatabase.getInstance().getReference("VisitedPlaces");
                             reference.child(pressedPlace.getmPlaceId()).setValue(pressedPlace);
                         }
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> parent of 3826fcf... Add ContainetFragment
                         Intent intent = new Intent(getActivity(), InPlaceActivity.class);
                         intent.putExtra("CurrentPlace", pressedPlace);
                         startActivity(intent);
