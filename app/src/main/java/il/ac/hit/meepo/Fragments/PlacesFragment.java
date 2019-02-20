@@ -194,7 +194,7 @@ public class PlacesFragment extends Fragment {
                        // Intent intent = new Intent(getActivity(), InPlaceActivity.class);
                       //  intent.putExtra("CurrentPlace", pressedPlace);
                        // startActivity(intent);
-                        InPlaceFragment inPlaceFragment = new InPlaceFragment();
+                        UsersFragment inPlaceFragment = new UsersFragment();
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("currentPlace", pressedPlace);
                         FragmentTransaction transaction = getFragmentManager().beginTransaction();
