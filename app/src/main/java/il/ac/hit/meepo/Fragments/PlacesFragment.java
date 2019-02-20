@@ -72,8 +72,10 @@ public class PlacesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         MainActivity activity = (MainActivity) getActivity();
+
         userLat = activity.getLat();
         userLng = activity.getLng();
+        Log.d(TAG, "Long_Lang: "+ userLng +" "+userLat);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_places, container, false);
         recyclerView = view.findViewById(R.id.rv_places);
