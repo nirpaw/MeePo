@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-<<<<<<< HEAD
     tools:context=".Fragments.UsersFragment">
 
     <android.support.v7.widget.RecyclerView
@@ -21,14 +20,16 @@
         android:id="@+id/recycler_view"/>
 
 
-=======
-    tools:context=".InPlaceFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/hello_blank_fragment" />
->>>>>>> parent of 3826fcf... Add ContainetFragment
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/hello_blank_fragment" />
+
 
 </RelativeLayout>

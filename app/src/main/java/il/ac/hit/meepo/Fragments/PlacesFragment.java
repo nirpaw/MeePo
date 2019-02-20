@@ -1,7 +1,6 @@
 package il.ac.hit.meepo.Fragments;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -36,7 +35,6 @@ import il.ac.hit.meepo.Adapters.PlacesAdapter;
 import il.ac.hit.meepo.Adapters.UsersAdapter;
 import il.ac.hit.meepo.Helpers.Function;
 import il.ac.hit.meepo.InPlaceActivity;
-import il.ac.hit.meepo.InPlaceFragment;
 import il.ac.hit.meepo.MainActivity;
 import il.ac.hit.meepo.Models.Chatlist;
 import il.ac.hit.meepo.Models.Place;
@@ -190,11 +188,6 @@ public class PlacesFragment extends Fragment {
                             reference = FirebaseDatabase.getInstance().getReference("VisitedPlaces");
                             reference.child(pressedPlace.getmPlaceId()).setValue(pressedPlace);
                         }
-<<<<<<< HEAD
-
-
-=======
->>>>>>> parent of 3826fcf... Add ContainetFragment
                         Intent intent = new Intent(getActivity(), InPlaceActivity.class);
                         intent.putExtra("CurrentPlace", pressedPlace);
                         startActivity(intent);
