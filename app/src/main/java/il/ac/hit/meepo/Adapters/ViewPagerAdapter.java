@@ -41,7 +41,7 @@ public class ViewPagerAdapter extends PagerAdapter {
         inflater = (LayoutInflater)activity.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View itemView = inflater.inflate(R.layout.item_other_user_profile_view_pager, container, false);
         ImageView image;
-        image = (ImageView)itemView.findViewById(R.id.iv_other_user);
+        image = itemView.findViewById(R.id.iv_other_user);
         DisplayMetrics dis = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(dis);
         int height = dis.heightPixels;
@@ -52,6 +52,7 @@ public class ViewPagerAdapter extends PagerAdapter {
                 .with(activity.getApplicationContext())
                 .load(images[position])
                 .into(image);
+        container.addView(itemView);
         return itemView;
     }
 
