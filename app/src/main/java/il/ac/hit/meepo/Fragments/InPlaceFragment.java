@@ -45,10 +45,10 @@ public class InPlaceFragment extends Fragment {
         listOfUsersInPlaceNow = new ArrayList<>();
 
         // add test users
-        listOfUsersInPlaceNow.add(new User(null,"A",null,null,"female","20",null,null,null));
-        listOfUsersInPlaceNow.add(new User(null,"b",null,null,"male","23",null,null,null));
-        listOfUsersInPlaceNow.add(new User(null,"c",null,null,"female","30",null,null,null));
-        listOfUsersInPlaceNow.add(new User(null,"d",null,null,"female","12",null,null,null));
+        listOfUsersInPlaceNow.add(new User(null,"A",null,null,"female","20",null,null,null,null,null,null));
+        listOfUsersInPlaceNow.add(new User(null,"A",null,null,"female","20",null,null,null,null,null,null));
+        listOfUsersInPlaceNow.add(new User(null,"A",null,null,"female","20",null,null,null,null,null,null));
+        listOfUsersInPlaceNow.add(new User(null,"A",null,null,"female","20",null,null,null,null,null,null));
 
         userInPlaceAdapter = new UserInPlaceAdapter(listOfUsersInPlaceNow);
 
@@ -60,7 +60,7 @@ public class InPlaceFragment extends Fragment {
                 intent.putExtra("user_object" ,listOfUsersInPlaceNow.get(position));
                 startActivity(intent);
             }
-
+            
             @Override
             public void onUserLongClicked(int position, View view) {
 
