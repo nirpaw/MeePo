@@ -44,6 +44,7 @@ import il.ac.hit.meepo.Fragments.PlacesFragment;
 import il.ac.hit.meepo.Fragments.ProfileFragment;
 import il.ac.hit.meepo.Fragments.UsersFragment;
 import il.ac.hit.meepo.Models.Chat;
+import il.ac.hit.meepo.Models.SwipeDisabledViewPager;
 import il.ac.hit.meepo.Models.User;
 
 public class MainActivity extends AppCompatActivity {
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     TextView username;
 
      TabLayout tabLayout;
-     ViewPager viewPager;
+     SwipeDisabledViewPager viewPager;
     LocationManager locationManager;
     private double userLat;
     private  double userLng;
@@ -82,10 +83,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("");
 
-
         profile_image = findViewById(R.id.profile_image);
         username = findViewById(R.id.username);
-
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
