@@ -12,6 +12,9 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,7 +32,10 @@ import java.util.List;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private TextInputEditText mFirstName, mEmail, mPassword, mLastName;
+    private TextInputEditText mFirstName, mEmail, mPassword, mLastName, mAbout, mJobTitle;
+    private TextView mAge;
+    private CheckBox mCheckMan, mCheckWoman;
+    private RadioGroup mRadioGroup;
     private Button mCreateAccountBtn;
     private Toolbar mToolbar;
     private static final String TAG = "RegisterActivity";
