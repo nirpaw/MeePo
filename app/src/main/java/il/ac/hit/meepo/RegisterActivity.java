@@ -23,7 +23,9 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -71,7 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if(!TextUtils.isEmpty(first_name) && !TextUtils.isEmpty(last_name) && !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)){
 
                     mRegProgress.setTitle("Registering User");
-                    mRegProgress.setMessage("Pleas wait while we create your account !");
+                    mRegProgress.setMessage("Please wait while we create your account !");
                     mRegProgress.setCanceledOnTouchOutside(false);
                     mRegProgress.show();
                     register_user(first_name, last_name,email, password);
@@ -102,7 +104,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                             reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
 
-                            HashMap<String, String> hashMap = new HashMap<>();
+                            HashMap<String, Object> hashMap = new HashMap<>();
                             hashMap.put("id", userid);
                             hashMap.put("firstName", first_name);
                             hashMap.put("lastName", last_name);
@@ -112,6 +114,13 @@ public class RegisterActivity extends AppCompatActivity {
                             hashMap.put("age", "28");
                             hashMap.put("looking","female");
                             hashMap.put("search", first_name.toLowerCase() + " " + last_name.toLowerCase());
+                            hashMap.put("about","default");
+                            hashMap.put("jobtitle","default");
+                            List<String> arrayListUrls = new ArrayList<>();
+                            arrayListUrls.add("default1");
+                            arrayListUrls.add("default2");
+                            arrayListUrls.add("default3");
+                            hashMap.put("imagesUrlList",arrayListUrls);
 
                             reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override

@@ -122,8 +122,8 @@ public class PlacesFragment extends Fragment {
         }
 
         protected String doInBackground(String... args) {
-             String placesUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+/*"32.0811212,34.7737281"+"32.063618,34.7727441"*/userLat+","+userLng  +"&types=bar"+"&radius=4000&key=" +getResources().getString(R.string.google_maps_api_key);
-            //String placesUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+"32.0811212,34.7737281"+"&types=bar"+"&radius=4000&key=" +getResources().getString(R.string.google_maps_api_key);
+            // String placesUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+/*"32.0811212,34.7737281"+"32.063618,34.7727441"*/userLat+","+userLng  +"&types=bar"+"&radius=4000&key=" +getResources().getString(R.string.google_maps_api_key);
+            String placesUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+"32.0811212,34.7737281"+"&types=bar"+"&radius=4000&key=" +getResources().getString(R.string.google_maps_api_key);
             Log.d(TAG, "debugUrl : "+placesUrl);
             String xml = "";
             String urlParameters = "";
