@@ -1,6 +1,8 @@
 package il.ac.hit.meepo.Models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class User implements Serializable {
 
@@ -13,8 +15,12 @@ public class User implements Serializable {
     private String looking;
     private String status;
     private String search;
+    private String about;
+    private String jobtitle;
+    private List<String> imagesUrlList;
 
-    public User(String id, String firstName, String lastName,String imageURL, String gender,String age,String looking,String status,String search) {
+
+    public User(String id, String firstName, String lastName, String imageURL, String gender, String age, String looking, String status, String search, ArrayList<String> imagesUrlList, String about, String jobtitle) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -24,6 +30,9 @@ public class User implements Serializable {
         this.looking = looking;
         this.status = status;
         this.search = search;
+        this.imagesUrlList = imagesUrlList;
+        this.about = about;
+        this.jobtitle = jobtitle;
     }
 
     public User() {
@@ -100,5 +109,30 @@ public class User implements Serializable {
 
     public void setSearch(String search) {
         this.search = search;
+    }
+
+    public List<String> getImagesUrlList() {
+        return imagesUrlList;
+    }
+
+    public void setImagesUrlList(List<String> imagesUrlList) {
+        this.imagesUrlList = imagesUrlList;
+    }
+
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
+    }
+
+
+    public String getJobtitle() {
+        return jobtitle;
+    }
+
+    public void setJobtitle(String jobtitle) {
+        this.jobtitle = jobtitle;
     }
 }
