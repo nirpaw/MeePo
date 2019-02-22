@@ -1,8 +1,10 @@
 package il.ac.hit.meepo.Adapters;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -13,10 +15,8 @@ import il.ac.hit.meepo.Models.User;
 import il.ac.hit.meepo.R;
 
 public class UserInPlaceAdapter extends RecyclerView.Adapter<UserInPlaceAdapter.UserInPlaceViewHolder> {
-    List<User> users;
+    public  List<User> users;
     MyUserInPlaceListener listener;
-
-
 
     public interface MyUserInPlaceListener {
         void onUserClicked(int position, View view);
@@ -27,7 +27,9 @@ public class UserInPlaceAdapter extends RecyclerView.Adapter<UserInPlaceAdapter.
         this.listener = listener;
     }
 
-    public UserInPlaceAdapter(List<User> userList) { this.users = userList; }
+    public UserInPlaceAdapter(List<User> userList) {
+        this.users = userList;
+    }
 
     public class UserInPlaceViewHolder extends RecyclerView.ViewHolder{
 
@@ -36,11 +38,18 @@ public class UserInPlaceAdapter extends RecyclerView.Adapter<UserInPlaceAdapter.
         TextView genderTv;
 //        ImageView imageIv;
 
-        public UserInPlaceViewHolder(@NonNull View itemView) {
+        public UserInPlaceViewHolder(@NonNull final View itemView) {
             super(itemView);
             nameTv = itemView.findViewById(R.id.tv_user_first_name);
             ageTv = itemView.findViewById(R.id.tv_user_age);
             genderTv = itemView.findViewById(R.id.tv_user_gendet);
+
+            itemView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+
+                }
+            });
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
