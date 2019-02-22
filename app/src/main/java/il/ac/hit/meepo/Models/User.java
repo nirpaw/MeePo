@@ -38,6 +38,25 @@ public class User implements Serializable {
     public User() {
     }
 
+    public User(User other) {
+
+        this.id = other.id;
+        this.firstName = other.firstName;
+        this.lastName = other.lastName;
+        this.imageURL = other.imageURL;
+        this.gender = other.gender;
+        this.age = other.age;
+        this.looking = other.looking;
+        this.status = other.status;
+        this.search = other.search;
+        this.imagesUrlList = new ArrayList<>();
+        for (String s: other.imagesUrlList) {
+            this.imagesUrlList.add(s);
+        }
+        this.about = other.about;
+        this.jobtitle = other.jobtitle;
+    }
+
 
     public String getId() {
         return id;
@@ -134,5 +153,23 @@ public class User implements Serializable {
 
     public void setJobtitle(String jobtitle) {
         this.jobtitle = jobtitle;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", imageURL='" + imageURL + '\'' +
+                ", gender='" + gender + '\'' +
+                ", age='" + age + '\'' +
+                ", looking='" + looking + '\'' +
+                ", status='" + status + '\'' +
+                ", search='" + search + '\'' +
+                ", about='" + about + '\'' +
+                ", jobtitle='" + jobtitle + '\'' +
+                ", imagesUrlList=" + imagesUrlList +
+                '}';
     }
 }

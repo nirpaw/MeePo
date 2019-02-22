@@ -1,10 +1,13 @@
 package il.ac.hit.meepo;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +16,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,7 +31,11 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -36,6 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextView mAge;
     private CheckBox mCheckMan, mCheckWoman;
     private RadioGroup mRadioGroup;
+    private RadioButton mGenderMale, mGenderFemale;
     private Button mCreateAccountBtn;
     private Toolbar mToolbar;
     private static final String TAG = "RegisterActivity";
@@ -47,6 +57,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     //ProgressDialog
     private ProgressDialog mRegProgress;
+
+    private String currentAge;
 
 
     @Override
@@ -62,10 +74,45 @@ public class RegisterActivity extends AppCompatActivity {
         mPassword = findViewById(R.id.reg_password);
         mCreateAccountBtn = findViewById(R.id.reg_create_btn);
         mToolbar = findViewById(R.id.register_app_toolbar);
+        // New addon new Parameters
+        mAbout = findViewById(R.id.reg_about_yourself);
+        mJobTitle = findViewById(R.id.reg_jobtitle);
+        mAge = findViewById(R.id.reg_age);
+        mCheckMan = findViewById(R.id.reg_looking_for_male);
+        mCheckWoman = findViewById(R.id.reg_looking_for_female);
+
+        mRadioGroup = findViewById(R.id.reg_radio_group_gender);
+        mGenderMale = findViewById(R.id.reg_gender_male);
+        mGenderFemale = findViewById(R.id.reg_gender_female);
+
+
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Create Account");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        mAge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(RegisterActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+
+                                currentAge = getAge(year,month,day) + "";
+                                mAge.setText(currentAge);
+
+                            }
+                        }, year, month, dayOfMonth);
+                datePickerDialog.show();
+            }
+        });
 
         mRegProgress = new ProgressDialog(this);
 
@@ -76,13 +123,35 @@ public class RegisterActivity extends AppCompatActivity {
                 String last_name = mLastName.getText().toString();
                 String email = mEmail.getText().toString();
                 String password = mPassword.getText().toString();
-                if(!TextUtils.isEmpty(first_name) && !TextUtils.isEmpty(last_name) && !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)){
+                String about = mAbout.getText().toString();
+                String jobtitle = mJobTitle.getText().toString();
+                String age = mAge.getText().toString() + "";
+                String gender = "";
+                String lookingfor = "";
+                if(mCheckMan.isChecked()){
+                    lookingfor = "men";
+                }
+                if(mCheckWoman.isChecked()){
+                    lookingfor = "women";
+                }
+                if (mRadioGroup.getCheckedRadioButtonId() == mGenderMale.getId()){
+                    gender = "male";
+                }
+
+                if(mRadioGroup.getCheckedRadioButtonId() == mGenderFemale.getId()){
+                    gender = "female";
+                }
+
+
+                if(!TextUtils.isEmpty(first_name) && !TextUtils.isEmpty(last_name) && !TextUtils.isEmpty(email)
+                        && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(age) && !TextUtils.isEmpty(gender)
+                        && !TextUtils.isEmpty(lookingfor) && !TextUtils.isEmpty(about) && !TextUtils.isEmpty(jobtitle) ){
 
                     mRegProgress.setTitle("Registering User");
                     mRegProgress.setMessage("Please wait while we create your account !");
                     mRegProgress.setCanceledOnTouchOutside(false);
                     mRegProgress.show();
-                    register_user(first_name, last_name,email, password);
+                    register_user(first_name, last_name,email, password, currentAge,gender,lookingfor, about, jobtitle);
                 }
                 else{
                     Snackbar.make(findViewById(R.id.reg_layout),"Fill all fields please",Snackbar.LENGTH_SHORT).show();
@@ -95,7 +164,25 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    private void register_user(final String first_name, final String last_name , String email, String password) {
+    private String getAge(int year, int month, int day){
+        Calendar dob = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+
+        dob.set(year, month, day);
+
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)){
+            age--;
+        }
+
+        Integer ageInt = new Integer(age);
+        String ageS = ageInt.toString();
+
+        return ageS;
+    }
+
+    private void register_user(final String first_name, final String last_name , String email, String password, final String age, final String gender, final String lookingfor, final String about, final String jobtitle) {
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
@@ -116,16 +203,18 @@ public class RegisterActivity extends AppCompatActivity {
                             hashMap.put("lastName", last_name);
                             hashMap.put("imageURL", "default");
                             hashMap.put("status", "offline");
-                            hashMap.put("gender", "male");
-                            hashMap.put("age", "28");
-                            hashMap.put("looking","female");
+                            hashMap.put("gender",gender);
+                            hashMap.put("age", age);
+                            hashMap.put("looking",lookingfor);
                             hashMap.put("search", first_name.toLowerCase() + " " + last_name.toLowerCase());
-                            hashMap.put("about","default");
-                            hashMap.put("jobtitle","default");
+                            hashMap.put("about",about);
+                            hashMap.put("jobtitle",jobtitle);
                             List<String> arrayListUrls = new ArrayList<>();
-                            arrayListUrls.add("default1");
-                            arrayListUrls.add("default2");
-                            arrayListUrls.add("default3");
+                            arrayListUrls.add("default");
+                            arrayListUrls.add("default");
+                            arrayListUrls.add("default");
+                            arrayListUrls.add("default");
+                            arrayListUrls.add("default");
                             hashMap.put("imagesUrlList",arrayListUrls);
 
                             reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
