@@ -5,8 +5,12 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,7 +42,12 @@ public class EditInfoActivity extends AppCompatActivity {
 
     private EditText mAbout, mJobTitle;
     private TextView mAge;
-    
+
+    private RadioGroup mGenderRadioGroup;
+    private RadioButton mMale, mFemale;
+
+    private ImageButton mSaveBtn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +59,15 @@ public class EditInfoActivity extends AppCompatActivity {
         userId = firebaseUser.getUid();
         mDatabase = FirebaseDatabase.getInstance();
         reference = mDatabase.getReference("Users");
+
+        mAbout = findViewById(R.id.edit_info_about_text);
+        mJobTitle = findViewById(R.id.edit_info_work_text);
+        mAge = findViewById(R.id.edit_info_age_text);
+        mGenderRadioGroup = findViewById(R.id.edit_info_gender_group);
+        mMale = findViewById(R.id.edit_info_gender_radio_male);
+        mFemale = findViewById(R.id.edit_info_gender_radio_female);
+
+
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -63,6 +81,18 @@ public class EditInfoActivity extends AppCompatActivity {
                         Log.d(TAG, "onDataChange: my user" + mUser.toString());
                     }
                 }
+
+                mAbout.setText(mUser.getAbout());
+                mJobTitle.setText(mUser.getJobtitle());
+                mAge.setText(mUser.getAge()+"");
+                if(mUser.getGender().equals("male")){
+                    mMale.setChecked(true);
+                }else if(mUser.getGender().equals("female")){
+                    mFemale.setChecked(true);
+                }
+
+
+
             }
 
             @Override
