@@ -34,7 +34,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Time;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -250,13 +253,28 @@ public class MainActivity extends AppCompatActivity {
 
         reference.updateChildren(hashMap);
     }
-
+    private void setLastSeen(){
+        reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("lastSeen", getCurrentTimeString());
+        try {
+            reference.updateChildren(hashMap);
+        }
+        catch (NullPointerException ex){
+            Log.d(TAG, " No Last seen");
+        }
+        catch (Exception ex){
+        }
+    }
+    private String  getCurrentTimeString(){
+        return "100"; // TODO: ADD LOGIC
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         status("online");
+
     }
 
     @Override
@@ -264,6 +282,7 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
 
        status("offline");
+     //  setLastSeen();
     }
 
     public void getLocation() {

@@ -1,6 +1,7 @@
 package il.ac.hit.meepo.Models;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,9 +19,11 @@ public class User implements Serializable {
     private String about;
     private String jobtitle;
     private List<String> imagesUrlList;
+    //
+    private String lastSeen;
+    private String lastLocationPlaceId;
 
-
-    public User(String id, String firstName, String lastName, String imageURL, String gender, String age, String looking, String status, String search, ArrayList<String> imagesUrlList, String about, String jobtitle) {
+    public User(String id, String firstName, String lastName, String imageURL, String gender, String age, String looking, String status, String search, String about, String jobtitle, List<String> imagesUrlList, String lastSeen, String lastLocationPlaceId) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -30,9 +33,11 @@ public class User implements Serializable {
         this.looking = looking;
         this.status = status;
         this.search = search;
-        this.imagesUrlList = imagesUrlList;
         this.about = about;
         this.jobtitle = jobtitle;
+        this.imagesUrlList = imagesUrlList;
+        this.lastSeen = lastSeen;
+        this.lastLocationPlaceId = lastLocationPlaceId;
     }
 
     public User() {
@@ -50,13 +55,34 @@ public class User implements Serializable {
         this.status = other.status;
         this.search = other.search;
         this.imagesUrlList = new ArrayList<>();
-        for (String s: other.imagesUrlList) {
-            this.imagesUrlList.add(s);
+        if(other.imagesUrlList != null) {
+            for (String s : other.imagesUrlList) {
+                this.imagesUrlList.add(s);
+            }
         }
         this.about = other.about;
         this.jobtitle = other.jobtitle;
+        this.lastSeen = other.lastSeen;
+        this.lastLocationPlaceId = other.lastLocationPlaceId;
+
     }
 
+
+    public String getLastSeen() {
+        return lastSeen;
+    }
+
+    public void setLastSeen(String lastSeen) {
+        this.lastSeen = lastSeen;
+    }
+
+    public String getLastLocationPlaceId() {
+        return lastLocationPlaceId;
+    }
+
+    public void setLastLocationPlaceId(String lastLocationPlaceId) {
+        this.lastLocationPlaceId = lastLocationPlaceId;
+    }
 
     public String getId() {
         return id;

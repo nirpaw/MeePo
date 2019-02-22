@@ -3,7 +3,6 @@ package il.ac.hit.meepo.Fragments;
 
 import android.content.Intent;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -12,10 +11,16 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +32,6 @@ import il.ac.hit.meepo.Models.User;
 import il.ac.hit.meepo.OtherUserProfileActivity;
 import il.ac.hit.meepo.R;
 
-import static android.support.v7.widget.helper.ItemTouchHelper.ACTION_STATE_SWIPE;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,6 +42,12 @@ public class InPlaceFragment extends Fragment {
     List<User> listOfUsersInPlaceNow;
     View view;
     SwipeController swipeController = null;
+
+    private FirebaseAuth mAuth;
+    private FirebaseUser mFirebaseUser;
+    private FirebaseDatabase mDataBase;
+    private DatabaseReference reference;
+    private String LogedInUserId;
     boolean swipeBack;
     private static final String TAG = "InPlaceFragment";
 
@@ -53,18 +62,17 @@ public class InPlaceFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_in_place, container, false);
+        recyclerView = view.findViewById(R.id.rv_users_in_place);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
-        setPlayersDataAdapter();
+        listOfUsersInPlaceNow = new ArrayList<>();
         setupRecyclerView();
+        setFireBaseDetails();
+        setUsersDataAdapter();
 
 
-//        userInPlaceAdapter.setListener(new UserInPlaceAdapter.MyUserInPlaceListener() {
-//            @Override
-//            public void onUserClicked(int position, View view) {
-//                Intent intent = new Intent(getContext(), OtherUserProfileActivity.class);
-//                intent.putExtra("user_object" ,listOfUsersInPlaceNow.get(position));
-//                startActivity(intent);
-//            }
+
 //
 //            @Override
 //            public void onUserLongClicked(int position, View view) {
@@ -123,16 +131,21 @@ public class InPlaceFragment extends Fragment {
 
 
 
-
-
-
         return view;
     }
+
+    private void setFireBaseDetails() {
+
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mAuth.getCurrentUser();
+        mDataBase = FirebaseDatabase.getInstance();
+
+        LogedInUserId = mFirebaseUser.getUid();
+
+    }
+
     private void setupRecyclerView() {
-        recyclerView = view.findViewById(R.id.rv_users_in_place);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(userInPlaceAdapter);
+
 
         swipeController = new SwipeController(new SwipeControllerActions() {
             @Override
@@ -153,16 +166,54 @@ public class InPlaceFragment extends Fragment {
             }
         });
     }
-    private void setPlayersDataAdapter() {
-        listOfUsersInPlaceNow = new ArrayList<>();
+    private void setUsersDataAdapter() {
+
+        reference = mDataBase.getReference("Users");
+        userInPlaceAdapter = new UserInPlaceAdapter(listOfUsersInPlaceNow);
+        recyclerView.setAdapter(userInPlaceAdapter);
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listOfUsersInPlaceNow.clear();
+                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    User user = snapshot.getValue(User.class);
+
+                    if (!user.getId().equals(LogedInUserId)) {
+                                listOfUsersInPlaceNow.add(user);
+                        userInPlaceAdapter.notifyDataSetChanged();
+                        Log.d(TAG, "onDataChange: my user" + mFirebaseUser.toString());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+        userInPlaceAdapter.setListener(new UserInPlaceAdapter.MyUserInPlaceListener() {
+            @Override
+            public void onUserClicked(int position, View view) {
+                Intent intent = new Intent(getContext(), OtherUserProfileActivity.class);
+                intent.putExtra("user_object" ,listOfUsersInPlaceNow.get(position));
+                startActivity(intent);
+            }
+
+            @Override
+            public void onUserLongClicked(int position, View view) {
+
+            }
+        });
 
         // add test users
-        listOfUsersInPlaceNow.add(new User(null,"A",null,null,"female","20",null,null,null,null,null,null));
-        listOfUsersInPlaceNow.add(new User(null,"A",null,null,"female","20",null,null,null,null,null,null));
-        listOfUsersInPlaceNow.add(new User(null,"A",null,null,"female","20",null,null,null,null,null,null));
-        listOfUsersInPlaceNow.add(new User(null,"A",null,null,"female","20",null,null,null,null,null,null));
+      // listOfUsersInPlaceNow.add(new User(null,"A",null,null,"female","20",null,null,null,null,null,null));
+      //  listOfUsersInPlaceNow.add(new User(null,"A",null,null,"female","20",null,null,null,null,null,null));
+       // listOfUsersInPlaceNow.add(new User(null,"A",null,null,"female","20",null,null,null,null,null,null));
+        //listOfUsersInPlaceNow.add(new User(null,"A",null,null,"female","20",null,null,null,null,null,null));
 
-        userInPlaceAdapter = new UserInPlaceAdapter(listOfUsersInPlaceNow);
 
 
     }
