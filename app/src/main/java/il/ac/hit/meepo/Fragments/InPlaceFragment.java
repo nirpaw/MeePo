@@ -28,6 +28,7 @@ import java.util.List;
 import il.ac.hit.meepo.Adapters.UserInPlaceAdapter;
 import il.ac.hit.meepo.Helpers.SwipeController;
 import il.ac.hit.meepo.Helpers.SwipeControllerActions;
+import il.ac.hit.meepo.Models.Place;
 import il.ac.hit.meepo.Models.User;
 import il.ac.hit.meepo.OtherUserProfileActivity;
 import il.ac.hit.meepo.R;
@@ -48,6 +49,9 @@ public class InPlaceFragment extends Fragment {
     private FirebaseDatabase mDataBase;
     private DatabaseReference reference;
     private String LogedInUserId;
+
+    Place currentPlace;
+
     boolean swipeBack;
     private static final String TAG = "InPlaceFragment";
 
@@ -65,7 +69,8 @@ public class InPlaceFragment extends Fragment {
         recyclerView = view.findViewById(R.id.rv_users_in_place);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-
+        Bundle arguments = getArguments();
+        currentPlace = (Place)arguments.getSerializable("currentPlace");
         listOfUsersInPlaceNow = new ArrayList<>();
         setupRecyclerView();
         setFireBaseDetails();
@@ -179,7 +184,7 @@ public class InPlaceFragment extends Fragment {
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()){
                     User user = snapshot.getValue(User.class);
 
-                    if (!user.getId().equals(LogedInUserId)) {
+                    if (!user.getId().equals(LogedInUserId) && user.getLastLocationPlaceId().equals(currentPlace.getmPlaceId())) {
                                 listOfUsersInPlaceNow.add(user);
                         userInPlaceAdapter.notifyDataSetChanged();
                         Log.d(TAG, "onDataChange: my user" + mFirebaseUser.toString());

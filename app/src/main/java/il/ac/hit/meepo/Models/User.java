@@ -19,7 +19,6 @@ public class User implements Serializable {
     private String about;
     private String jobtitle;
     private List<String> imagesUrlList;
-    //
     private String lastSeen;
     private String lastLocationPlaceId;
 

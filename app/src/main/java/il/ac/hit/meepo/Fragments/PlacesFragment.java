@@ -1,7 +1,6 @@
 package il.ac.hit.meepo.Fragments;
 
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,7 +35,6 @@ import java.util.List;
 import il.ac.hit.meepo.Adapters.PlacesAdapter;
 import il.ac.hit.meepo.Adapters.UsersAdapter;
 import il.ac.hit.meepo.Helpers.Function;
-import il.ac.hit.meepo.InPlaceActivity;
 import il.ac.hit.meepo.MainActivity;
 import il.ac.hit.meepo.Models.Chatlist;
 import il.ac.hit.meepo.Models.Place;
@@ -53,8 +52,10 @@ public class PlacesFragment extends Fragment {
     private UsersAdapter usersAdapter;
     private List<User> mUsers;
 
-    private FirebaseUser fuser;
+    private FirebaseUser firebaseUser;
     private DatabaseReference reference;
+    private FirebaseAuth mAuth;
+
 
     private List<Chatlist> usersList;
 
@@ -72,6 +73,10 @@ public class PlacesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         MainActivity activity = (MainActivity) getActivity();
+        //firebase
+        mAuth = FirebaseAuth.getInstance();
+        firebaseUser = mAuth.getCurrentUser();
+
 
         userLat = activity.getLat();
         userLng = activity.getLng();
@@ -180,6 +185,9 @@ public class PlacesFragment extends Fragment {
                     @Override
                     public void OnPlaceClicked(int position, View view) {
                         Place pressedPlace = listOfFoundedPlaces.get(position);
+
+                        setUserLastLocation(pressedPlace);
+
                         boolean placeIsExist = false;
                         for(Place place : listOfVisitedPlaces){
                             if( pressedPlace.getmPlaceId() == place.getmPlaceId()){
@@ -191,12 +199,12 @@ public class PlacesFragment extends Fragment {
                             reference = FirebaseDatabase.getInstance().getReference("VisitedPlaces");
                             reference.child(pressedPlace.getmPlaceId()).setValue(pressedPlace);
                         }
-                       // Intent intent = new Intent(getActivity(), InPlaceActivity.class);
-                      //  intent.putExtra("CurrentPlace", pressedPlace);
-                       // startActivity(intent);
+
                         InPlaceFragment inPlaceFragment = new InPlaceFragment();
+
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("currentPlace", pressedPlace);
+                        inPlaceFragment.setArguments(bundle);
                         FragmentTransaction transaction = getFragmentManager().beginTransaction();
                         transaction.replace(R.id.container_frame, inPlaceFragment);
                         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
@@ -205,7 +213,6 @@ public class PlacesFragment extends Fragment {
                     }
                 });
                 recyclerView.setAdapter(placesAdapter);
-
 
             } else {
                 //TODO: NO PLACES FOUND
@@ -260,4 +267,14 @@ public class PlacesFragment extends Fragment {
         return (rad * 180.0 / Math.PI);
     }
 
+    private void setUserLastLocation(Place pressedPlace){
+        try {
+            reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("lastLocationPlaceId", pressedPlace.getmPlaceId());
+            reference.updateChildren(hashMap);
+        }catch (Exception ex){
+
+        }
+    }
 }
