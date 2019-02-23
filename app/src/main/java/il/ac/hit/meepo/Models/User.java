@@ -21,8 +21,9 @@ public class User implements Serializable {
     private List<String> imagesUrlList;
     private String lastSeen;
     private String lastLocationPlaceId;
+    private List<String> likedByUserList;
 
-    public User(String id, String firstName, String lastName, String imageURL, String gender, String age, String looking, String status, String search, String about, String jobtitle, List<String> imagesUrlList, String lastSeen, String lastLocationPlaceId) {
+    public User(String id, String firstName, String lastName, String imageURL, String gender, String age, String looking, String status, String search, String about, String jobtitle, List<String> imagesUrlList, String lastSeen, String lastLocationPlaceId, List<String> likedByUserList) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -37,6 +38,7 @@ public class User implements Serializable {
         this.imagesUrlList = imagesUrlList;
         this.lastSeen = lastSeen;
         this.lastLocationPlaceId = lastLocationPlaceId;
+        this.likedByUserList = likedByUserList;
     }
 
     public User() {
@@ -63,9 +65,22 @@ public class User implements Serializable {
         this.jobtitle = other.jobtitle;
         this.lastSeen = other.lastSeen;
         this.lastLocationPlaceId = other.lastLocationPlaceId;
-
+        this.likedByUserList = new ArrayList<>();
+        if(other.likedByUserList != null) {
+            for (String s : other.likedByUserList) {
+                this.likedByUserList.add(s);
+            }
+        }
     }
 
+
+    public List<String> getLikedByUserList() {
+        return likedByUserList;
+    }
+
+    public void setLikedByUserList(List<String> likedByUserList) {
+        this.likedByUserList = likedByUserList;
+    }
 
     public String getLastSeen() {
         return lastSeen;

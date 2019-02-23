@@ -150,13 +150,13 @@ public class MainActivity extends AppCompatActivity {
 
                 //viewPagerAdapter.addFragment(placesFragment, "Places");
 
-                if(unread == 0){
-                    viewPagerAdapter.addFragment(new ChatsFragment(),"Chats");
-                }
-                else{
-                    viewPagerAdapter.addFragment(new ChatsFragment(),"("+unread+") Chats");
-
-                }
+//                if(unread == 0){
+//                    viewPagerAdapter.addFragment(new ChatsFragment(),"Chats");
+//                }
+//                else{
+//                    viewPagerAdapter.addFragment(new ChatsFragment(),"("+unread+") Chats");
+//
+//                }
 
                // viewPagerAdapter.addFragment(new UsersFragment(), "Users");
 

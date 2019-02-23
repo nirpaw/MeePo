@@ -21,7 +21,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
-        <activity android:name=".OtherUserProfileActivity"></activity>
+        <activity android:name=".OtherUserProfileActivity"
+            android:theme="@style/Theme.AppCompat.Dialog"
+            android:excludeFromRecents="true"/>
         <activity
             android:name=".InPlaceActivity"
             android:parentActivityName=".MainActivity" />

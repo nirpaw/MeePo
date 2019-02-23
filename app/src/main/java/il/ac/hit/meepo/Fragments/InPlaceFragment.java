@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import il.ac.hit.meepo.Adapters.UserInPlaceAdapter;
@@ -43,6 +44,9 @@ public class InPlaceFragment extends Fragment {
     List<User> listOfUsersInPlaceNow;
     View view;
     SwipeController swipeController = null;
+    boolean watchOtherUserDeatails;
+
+    boolean alreadyDeltedFromList = false;
 
     private FirebaseAuth mAuth;
     private FirebaseUser mFirebaseUser;
@@ -65,6 +69,9 @@ public class InPlaceFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Log.d(TAG, "onCreateView:  start ");
+        watchOtherUserDeatails = false;
+
         view = inflater.inflate(R.layout.fragment_in_place, container, false);
         recyclerView = view.findViewById(R.id.rv_users_in_place);
         recyclerView.setHasFixedSize(true);
@@ -72,10 +79,10 @@ public class InPlaceFragment extends Fragment {
         Bundle arguments = getArguments();
         currentPlace = (Place)arguments.getSerializable("currentPlace");
         listOfUsersInPlaceNow = new ArrayList<>();
+
         setupRecyclerView();
         setFireBaseDetails();
         setUsersDataAdapter();
-
 
 
 //
@@ -134,8 +141,6 @@ public class InPlaceFragment extends Fragment {
 //        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
 //        itemTouchHelper.attachToRecyclerView(recyclerView);
 
-
-
         return view;
     }
 
@@ -149,6 +154,25 @@ public class InPlaceFragment extends Fragment {
 
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(!watchOtherUserDeatails) {
+            DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Users").child(mFirebaseUser.getUid());
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("lastLocationPlaceId", "Not in place");
+            myRef.updateChildren(map);
+            HashMap<String, Object> map2 = new HashMap<>();
+            List<String> dummyList = new ArrayList<>();
+            String d = "default";
+            dummyList.add(d);
+            map2.put("likedByUserList", dummyList);
+            myRef.updateChildren(map2);
+            Log.d(TAG, "onPause: im Not in place");
+        }
+        Log.d(TAG, "onPause: ");
+    }
+
     private void setupRecyclerView() {
 
 
@@ -158,6 +182,65 @@ public class InPlaceFragment extends Fragment {
                 userInPlaceAdapter.users.remove(position);
                 userInPlaceAdapter.notifyItemRemoved(position);
                 userInPlaceAdapter.notifyItemRangeChanged(position, userInPlaceAdapter.getItemCount());
+            }
+
+            @Override
+            public void onLeftClicked(final int position) {
+                alreadyDeltedFromList = false;
+                reference = FirebaseDatabase.getInstance().getReference("Users").child(mFirebaseUser.getUid());
+                reference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        if(!listOfUsersInPlaceNow.isEmpty()) {
+                            User thisUser = dataSnapshot.getValue(User.class);
+                            List<String> myLikedUsers;
+                            myLikedUsers = thisUser.getLikedByUserList();
+                            if (position <= listOfUsersInPlaceNow.size() - 1 && !alreadyDeltedFromList) {
+                                User likedOtherUser = listOfUsersInPlaceNow.get(position);
+                                boolean alreadyLikedUser = false;
+                                //match check
+                                boolean isMatch = false;
+                                for (String likesID : likedOtherUser.getLikedByUserList() // check if match
+                                ) {
+                                    if (thisUser.getId().equals(likesID) && !likesID.equals("default")) {
+                                        isMatch = true; // TODO: MATCH (ADD MATCH)
+                                        Log.d(TAG, "onDataChange: match!!!");
+                                    }
+                                }
+                                for(int i = 0 ; i < myLikedUsers.size() ; i++){
+                                    if(myLikedUsers.get(i).equals(likedOtherUser.getId()))
+                                    {
+                                        alreadyLikedUser = true;
+                                    }
+                                }
+//                                for (String likedBefore : myLikedUsers // check endless update
+//                                ) {
+//                                    if (likedOtherUser.getId().equals(likedBefore) ) {
+//                                        alreadyLikedUser = true;
+//                                    }
+//                                }
+                                if (!alreadyLikedUser) {
+                                    myLikedUsers.add(likedOtherUser.getId());
+                                    HashMap<String, Object> hashMap = new HashMap<>();
+                                    hashMap.put("likedByUserList", myLikedUsers);
+                                    reference.updateChildren(hashMap);
+                                }
+                                if (!userInPlaceAdapter.users.isEmpty()) {
+                                    userInPlaceAdapter.users.remove(position);
+                                   userInPlaceAdapter.notifyItemRemoved(position);
+                                    userInPlaceAdapter.notifyItemRangeChanged(position, userInPlaceAdapter.getItemCount());
+                                    alreadyDeltedFromList = true;
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
             }
         });
 
@@ -171,7 +254,9 @@ public class InPlaceFragment extends Fragment {
             }
         });
     }
+
     private void setUsersDataAdapter() {
+        Log.d(TAG, "setUsersDataAdapter: ");
 
         reference = mDataBase.getReference("Users");
         userInPlaceAdapter = new UserInPlaceAdapter(listOfUsersInPlaceNow);
@@ -185,13 +270,11 @@ public class InPlaceFragment extends Fragment {
                     User user = snapshot.getValue(User.class);
 
                     if (!user.getId().equals(LogedInUserId) && user.getLastLocationPlaceId().equals(currentPlace.getmPlaceId())) {
-                                listOfUsersInPlaceNow.add(user);
+                        listOfUsersInPlaceNow.add(user);
                         userInPlaceAdapter.notifyDataSetChanged();
-                        Log.d(TAG, "onDataChange: my user" + mFirebaseUser.toString());
                     }
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -204,6 +287,7 @@ public class InPlaceFragment extends Fragment {
             public void onUserClicked(int position, View view) {
                 Intent intent = new Intent(getContext(), OtherUserProfileActivity.class);
                 intent.putExtra("user_object" ,listOfUsersInPlaceNow.get(position));
+                watchOtherUserDeatails = true;
                 startActivity(intent);
             }
 
@@ -213,14 +297,5 @@ public class InPlaceFragment extends Fragment {
             }
         });
 
-        // add test users
-      // listOfUsersInPlaceNow.add(new User(null,"A",null,null,"female","20",null,null,null,null,null,null));
-      //  listOfUsersInPlaceNow.add(new User(null,"A",null,null,"female","20",null,null,null,null,null,null));
-       // listOfUsersInPlaceNow.add(new User(null,"A",null,null,"female","20",null,null,null,null,null,null));
-        //listOfUsersInPlaceNow.add(new User(null,"A",null,null,"female","20",null,null,null,null,null,null));
-
-
-
     }
-
-    }
+}
