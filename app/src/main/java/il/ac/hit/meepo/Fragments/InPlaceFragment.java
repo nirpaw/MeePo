@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -54,6 +55,9 @@ public class InPlaceFragment extends Fragment {
     private DatabaseReference reference;
     private String LogedInUserId;
 
+    DatabaseReference usersDb;
+    String currentUId;
+
     Place currentPlace;
 
     boolean swipeBack;
@@ -80,66 +84,14 @@ public class InPlaceFragment extends Fragment {
         currentPlace = (Place)arguments.getSerializable("currentPlace");
         listOfUsersInPlaceNow = new ArrayList<>();
 
-        setupRecyclerView();
         setFireBaseDetails();
+        setupRecyclerView();
         setUsersDataAdapter();
 
-
-//
-//            @Override
-//            public void onUserLongClicked(int position, View view) {
-//
-//                //TODO : REPORT USER?
-//            }
-//        });
-
-
-//        final ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP|ItemTouchHelper.DOWN,ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {
-//            @Override
-//
-//            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
-//                return false;
-//            }
-//
-//            @Override
-//            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-//                listOfUsersInPlaceNow.remove(viewHolder.getAdapterPosition());
-//                userInPlaceAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
-//            }
-//
-//            @Override
-//            public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-//                return makeMovementFlags(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
-//            }
-//
-//            @Override
-//            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-//                if (actionState == ACTION_STATE_SWIPE) {
-//                    setTouchListener(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-//                }
-//                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-//            }
-//
-//            private void setTouchListener(Canvas c,
-//                                          RecyclerView recyclerView,
-//                                          RecyclerView.ViewHolder viewHolder,
-//                                          float dX, float dY,
-//                                          int actionState, boolean isCurrentlyActive) {
-//
-//                recyclerView.setOnTouchListener(new View.OnTouchListener() {
-//                    @Override
-//                    public boolean onTouch(View v, MotionEvent event) {
-//                        swipeBack = event.getAction() == MotionEvent.ACTION_CANCEL || event.getAction() == MotionEvent.ACTION_UP;
-//                        return false;
-//                    }
-//                });
-//
-//            }
-//        };
-//
-//
-//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-//        itemTouchHelper.attachToRecyclerView(recyclerView);
+        //update
+        usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
+        currentUId = mAuth.getCurrentUser().getUid();
+        //
 
         return view;
     }
@@ -149,7 +101,6 @@ public class InPlaceFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
         mDataBase = FirebaseDatabase.getInstance();
-
         LogedInUserId = mFirebaseUser.getUid();
 
     }
@@ -179,6 +130,10 @@ public class InPlaceFragment extends Fragment {
         swipeController = new SwipeController(new SwipeControllerActions() {
             @Override
             public void onRightClicked(int position) {
+                User objOtherUser = listOfUsersInPlaceNow.get(position);
+                String stringOtherUserID = objOtherUser.getId();
+                usersDb.child(stringOtherUserID).child("connections").child("nope").child(currentUId).setValue(true);
+
                 userInPlaceAdapter.users.remove(position);
                 userInPlaceAdapter.notifyItemRemoved(position);
                 userInPlaceAdapter.notifyItemRangeChanged(position, userInPlaceAdapter.getItemCount());
@@ -186,61 +141,77 @@ public class InPlaceFragment extends Fragment {
 
             @Override
             public void onLeftClicked(final int position) {
-                alreadyDeltedFromList = false;
-                reference = FirebaseDatabase.getInstance().getReference("Users").child(mFirebaseUser.getUid());
-                reference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // update
+                User objOtherUser = listOfUsersInPlaceNow.get(position);
+                String stringOtherUserID = objOtherUser.getId();
+                usersDb.child(stringOtherUserID).child("connections").child("yeps").child(currentUId).setValue(true);
+                isConnectionMatch(stringOtherUserID);
 
-                        if(!listOfUsersInPlaceNow.isEmpty()) {
-                            User thisUser = dataSnapshot.getValue(User.class);
-                            List<String> myLikedUsers;
-                            myLikedUsers = thisUser.getLikedByUserList();
-                            if (position <= listOfUsersInPlaceNow.size() - 1 && !alreadyDeltedFromList) {
-                                User likedOtherUser = listOfUsersInPlaceNow.get(position);
-                                boolean alreadyLikedUser = false;
-                                //match check
-                                boolean isMatch = false;
-                                for (String likesID : likedOtherUser.getLikedByUserList() // check if match
-                                ) {
-                                    if (thisUser.getId().equals(likesID) && !likesID.equals("default")) {
-                                        isMatch = true; // TODO: MATCH (ADD MATCH)
-                                        Log.d(TAG, "onDataChange: match!!!");
-                                    }
-                                }
-                                for(int i = 0 ; i < myLikedUsers.size() ; i++){
-                                    if(myLikedUsers.get(i).equals(likedOtherUser.getId()))
-                                    {
-                                        alreadyLikedUser = true;
-                                    }
-                                }
+                userInPlaceAdapter.users.remove(position);
+                userInPlaceAdapter.notifyItemRemoved(position);
+                userInPlaceAdapter.notifyItemRangeChanged(position, userInPlaceAdapter.getItemCount());
+
+                //
+
+//                alreadyDeltedFromList = false;
+//                reference = FirebaseDatabase.getInstance().getReference("Users").child(mFirebaseUser.getUid());
+//
+
+                //                reference.addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//
+//                        if(!listOfUsersInPlaceNow.isEmpty()) {
+//                            User thisUser = dataSnapshot.getValue(User.class);
+//                            List<String> myLikedUsers;
+//                            myLikedUsers = thisUser.getLikedByUserList();
+//                            if (position <= listOfUsersInPlaceNow.size() - 1 && !alreadyDeltedFromList) {
+//                                User likedOtherUser = listOfUsersInPlaceNow.get(position);
+//                                boolean alreadyLikedUser = false;
+//                                //match check
+//                                boolean isMatch = false;
+//                                for (String likesID : likedOtherUser.getLikedByUserList() // check if match
+//                                ) {
+//                                    if (thisUser.getId().equals(likesID) && !likesID.equals("default")) {
+//                                        isMatch = true; // TODO: MATCH (ADD MATCH)
+//                                        Log.d(TAG, "onDataChange: match!!!");
+//                                    }
+//                                }
+//                                for(int i = 0 ; i < myLikedUsers.size() ; i++){
+//                                    if(myLikedUsers.get(i).equals(likedOtherUser.getId()))
+//                                    {
+//                                        alreadyLikedUser = true;
+//                                    }
+//                                }
+
+                //
 //                                for (String likedBefore : myLikedUsers // check endless update
 //                                ) {
 //                                    if (likedOtherUser.getId().equals(likedBefore) ) {
 //                                        alreadyLikedUser = true;
 //                                    }
 //                                }
-                                if (!alreadyLikedUser) {
-                                    myLikedUsers.add(likedOtherUser.getId());
-                                    HashMap<String, Object> hashMap = new HashMap<>();
-                                    hashMap.put("likedByUserList", myLikedUsers);
-                                    reference.updateChildren(hashMap);
-                                }
-                                if (!userInPlaceAdapter.users.isEmpty()) {
-                                    userInPlaceAdapter.users.remove(position);
-                                   userInPlaceAdapter.notifyItemRemoved(position);
-                                    userInPlaceAdapter.notifyItemRangeChanged(position, userInPlaceAdapter.getItemCount());
-                                    alreadyDeltedFromList = true;
-                                }
-                            }
-                        }
-                    }
+//                                if (!alreadyLikedUser) {
+//                                    myLikedUsers.add(likedOtherUser.getId());
+//                                    HashMap<String, Object> hashMap = new HashMap<>();
+//                                    hashMap.put("likedByUserList", myLikedUsers);
+//                                    reference.updateChildren(hashMap);
+//                                }
+//                                if (!userInPlaceAdapter.users.isEmpty()) {
+//                                    userInPlaceAdapter.users.remove(position);
+//                                    userInPlaceAdapter.notifyItemRemoved(position);
+//                                    userInPlaceAdapter.notifyItemRangeChanged(position, userInPlaceAdapter.getItemCount());
+//                                    alreadyDeltedFromList = true;
+//                                }
+//                            }
+//                        }
+//                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                    }
+//                });
             }
         });
 
@@ -296,6 +267,24 @@ public class InPlaceFragment extends Fragment {
 
             }
         });
+    }
 
+    private void isConnectionMatch(String otherUserUid){
+        DatabaseReference currentUserConnectionDB = usersDb.child(currentUId).child("connections").child("yeps").child(otherUserUid);
+        currentUserConnectionDB.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    Toast.makeText(getContext(), "MATCH", Toast.LENGTH_SHORT).show();
+                    usersDb.child(dataSnapshot.getKey()).child("connections").child("matches").child(currentUId).setValue("true");
+                    usersDb.child(currentUId).child("connections").child("matches").child(dataSnapshot.getKey()).setValue("true");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }
