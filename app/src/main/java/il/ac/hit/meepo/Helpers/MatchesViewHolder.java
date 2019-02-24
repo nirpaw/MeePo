@@ -1,11 +1,14 @@
 package il.ac.hit.meepo.Helpers;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import il.ac.hit.meepo.NewChatActivity;
 import il.ac.hit.meepo.R;
 
 public class MatchesViewHolder  extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -23,6 +26,9 @@ public class MatchesViewHolder  extends RecyclerView.ViewHolder implements View.
 
     @Override
     public void onClick(View v) {
-
+        Intent intent = new Intent(v.getContext() , NewChatActivity.class);
+        Bundle bundle = new Bundle();
+        intent.putExtra("match_user_id", mMatchidTV.getText().toString());
+        v.getContext().startActivity(intent);
     }
 }
