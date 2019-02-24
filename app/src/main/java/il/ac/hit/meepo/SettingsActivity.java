@@ -42,17 +42,7 @@ public class SettingsActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mUser = dataSnapshot.getValue(User.class);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+        mUser = (User)getIntent().getSerializableExtra("user");
 
 
         mToolbar = findViewById(R.id.settings_bar);
@@ -68,13 +58,14 @@ public class SettingsActivity extends AppCompatActivity {
 
         mShowMeMen.setChecked(false);
         mShowMeWomen.setChecked(false);
+        if(mUser != null) {
+            if (mUser.getLooking().equals("men")) {
+                mShowMeMen.setChecked(true);
+            }
 
-        if(mUser.getLooking().equals("men")){
-            mShowMeMen.setChecked(true);
-        }
-
-        if(mUser.getLooking().equals("women")){
-            mShowMeWomen.setChecked(true);
+            if (mUser.getLooking().equals("women")) {
+                mShowMeWomen.setChecked(true);
+            }
         }
 
 

@@ -57,6 +57,7 @@ public class ProfileFragment extends Fragment {
 
     DatabaseReference reference;
     FirebaseUser fuser;
+    private User mUser;
 
     StorageReference storageReference;
     private static final int IMAGE_REQUEST = 1;
@@ -64,7 +65,7 @@ public class ProfileFragment extends Fragment {
     private StorageTask uploadTask;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
@@ -83,6 +84,8 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
+                mUser = dataSnapshot.getValue(User.class);
+
                 username.setText(user.getFirstName()+ ", " + user.getAge());
                 if(user.getImageURL().equals("default")){
                     image_profile.setImageResource(R.mipmap.ic_launcher);
@@ -117,7 +120,10 @@ public class ProfileFragment extends Fragment {
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), SettingsActivity.class));
+                Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                intent.putExtra("user",mUser);
+
+                startActivity(intent);
             }
         });
 
