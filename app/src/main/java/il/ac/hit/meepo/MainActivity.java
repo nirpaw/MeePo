@@ -43,6 +43,7 @@ import java.util.HashMap;
 import de.hdodenhof.circleimageview.CircleImageView;
 import il.ac.hit.meepo.Fragments.ChatsFragment;
 import il.ac.hit.meepo.Fragments.ContainerFragment;
+import il.ac.hit.meepo.Fragments.MatchesFragment;
 import il.ac.hit.meepo.Fragments.PlacesFragment;
 import il.ac.hit.meepo.Fragments.ProfileFragment;
 import il.ac.hit.meepo.Fragments.UsersFragment;
@@ -161,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
                // viewPagerAdapter.addFragment(new UsersFragment(), "Users");
 
 
+                viewPagerAdapter.addFragment(new MatchesFragment(), "Matches");
 
 
                 viewPager.setAdapter(viewPagerAdapter);
