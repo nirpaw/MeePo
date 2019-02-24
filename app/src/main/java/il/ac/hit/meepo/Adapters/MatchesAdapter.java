@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import il.ac.hit.meepo.Helpers.MatchesViewHolder;
@@ -34,7 +36,16 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesViewHolder>  {
 
     @Override
     public void onBindViewHolder(@NonNull MatchesViewHolder holder, int i) {
-        holder.matchidTV.setText(matchesList.get(i).getUserId());
+        holder.mMatchidTV.setText(matchesList.get(i).getUserId());
+        holder.mMatchNameTV.setText(matchesList.get(i).getUserFirsName());
+        if(matchesList.get(i).getUserProfileImgUrl().equals("default")){
+            // TODO: ADD SOME DEFAULT IMAGE
+        }
+        else {
+            String imgUrl = matchesList.get(i).getUserProfileImgUrl();
+            Glide.with(context).load(imgUrl).into(holder.mMatchImgIV);
+        }
+
     }
 
     @Override

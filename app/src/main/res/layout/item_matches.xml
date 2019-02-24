@@ -5,13 +5,26 @@
     android:padding="20dp">
 
     <ImageView
+        android:id="@+id/iv_match_img"
         android:src="@android:mipmap/sym_def_app_icon"
-        android:layout_width="75sp"
-        android:layout_height="75sp" />
+        android:layout_width="50sp"
+        android:layout_height="50sp" />
+    <LinearLayout
+        android:paddingStart="20sp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/tv_match_name"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Match Name"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Match's id"
         android:gravity="center"
         android:id="@+id/match_id"/>
+    </LinearLayout>
 </LinearLayout>
