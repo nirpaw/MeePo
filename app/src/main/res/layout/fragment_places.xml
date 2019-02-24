@@ -6,16 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.PlacesFragment">
 
-    <!--<ImageView-->
-        <!--android:id="@+id/iv_map"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="150dp"-->
-        <!--android:scaleType="fitXY"/>-->
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_places"
+    <LinearLayout
+        android:id="@+id/topScreen"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+        <Space
+            android:id="@+id/space"
+            android:layout_width="match_parent"
+            android:layout_height="250dp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_below="@+id/space"
+            android:id="@+id/rv_places"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>

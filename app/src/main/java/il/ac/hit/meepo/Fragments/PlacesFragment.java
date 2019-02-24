@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -65,6 +74,11 @@ public class PlacesFragment extends Fragment {
 
     double userLat;
     double userLng;
+    private SupportMapFragment mapFragment;
+
+    private GoogleMap mMap;
+
+
     DatabaseReference mPlaceReference;
 
     private static final String TAG = "PlacesFragment";
@@ -94,7 +108,7 @@ public class PlacesFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()
-                     ) {
+                ) {
                     Place place = snapshot.getValue(Place.class);
                     listOfVisitedPlaces.add(place);
                     Log.d(TAG, "onVisitedPlaces: "+place.toString());
@@ -116,6 +130,27 @@ public class PlacesFragment extends Fragment {
 //                "&key="+ getResources().getString(R.string.google_maps_api_key);
 //        Glide.with(this).load(imgUrl).into(mapImage);
 
+
+
+        if (mapFragment == null) {
+            mapFragment = SupportMapFragment.newInstance();
+            mapFragment.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(GoogleMap googleMap) {
+                    LatLng latLng = new LatLng(32.0811212,34.7737281); // TEL AVIV
+                 //   LatLng latLng = new LatLng(userLat, userLat); // REAL LOCATION
+                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(latLng)      // Sets the center of the map to Mountain View
+                            .zoom(17)                   // Sets the zoom
+                            .bearing(90)                // Sets the orientation of the camera to east
+                            .tilt(30)                   // Sets the tilt of the camera to 30 degrees
+                            .build();                   // Creates a CameraPosition from the builder
+                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                }
+            });
+        }
+
+        getChildFragmentManager().beginTransaction().replace(R.id.map, mapFragment).commit();
 
         return view;
     }
@@ -181,6 +216,7 @@ public class PlacesFragment extends Fragment {
 
                 sortListByDistance();
                 PlacesAdapter placesAdapter = new PlacesAdapter(listOfFoundedPlaces, getContext());
+
                 placesAdapter.setClickListener(new PlacesAdapter.IPlaceAdapterListener() {
                     @Override
                     public void OnPlaceClicked(int position, View view) {
