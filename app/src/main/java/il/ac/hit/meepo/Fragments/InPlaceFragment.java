@@ -172,7 +172,7 @@ public class InPlaceFragment extends Fragment {
 
         // TODO: CHECK IF : DESIRBLE SEX , NOT ME , I CURRENT PLACE, NOT IN MY NOPS
         reference = mDataBase.getReference("Users");
-        userInPlaceAdapter = new UserInPlaceAdapter(listOfUsersInPlaceNow);
+        userInPlaceAdapter = new UserInPlaceAdapter(listOfUsersInPlaceNow, getContext());
         recyclerView.setAdapter(userInPlaceAdapter);
 
         reference.addValueEventListener(new ValueEventListener() {
