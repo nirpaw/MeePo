@@ -38,7 +38,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import il.ac.hit.meepo.Models.User;
 
@@ -75,6 +77,8 @@ public class EditInfoActivity extends AppCompatActivity {
     private Uri imageUri;
     private StorageTask uploadTask;
 
+    private String currentPhotoForUpload = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +107,7 @@ public class EditInfoActivity extends AppCompatActivity {
         mMainPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                currentPhotoForUpload="MainPhoto";
                 openImage();
             }
         });
@@ -165,6 +170,34 @@ public class EditInfoActivity extends AppCompatActivity {
                     Glide.with(getApplicationContext()).load(user.getImageURL()).centerCrop().into(mMainPhoto);
 
                 }
+                List<String> listOfImageUrl = new ArrayList<>( user.getImagesUrlList());
+                for (int i = 0; i < listOfImageUrl.size() ; i++) {
+                    if(listOfImageUrl.get(i).equals("default")){
+                        switch (i){
+                            case 0:
+                                mMainPhoto.setImageResource(R.drawable.profile_image);
+                                break;
+                            case 1:
+                                break;
+                            case 2:
+                                break;
+                            case 3:
+                                break;
+                            case 4:
+                                break;
+                        }
+                    }
+                }
+
+                for(String imageUrl: user.getImagesUrlList()){
+                    if(imageUrl.equals("default") ){
+                        mMainPhoto.setImageResource(R.mipmap.ic_launcher);
+                    }else{
+
+                        Glide.with(getApplicationContext()).load(user.getImageURL()).centerCrop().into(mMainPhoto);
+
+                    }
+                }
             }
 
             @Override
@@ -219,10 +252,16 @@ public class EditInfoActivity extends AppCompatActivity {
                         Uri downloadUri = task.getResult();
                         String mUri = downloadUri.toString();
 
-                        reference = FirebaseDatabase.getInstance().getReference("Users").child(userId);
-                        HashMap<String, Object> map = new HashMap<>();
-                        map.put("imageURL",mUri);
-                        reference.updateChildren(map);
+                        if(currentPhotoForUpload.equals("MainPhoto")) {
+
+                            reference = FirebaseDatabase.getInstance().getReference("Users").child(userId);
+                            HashMap<String, Object> map = new HashMap<>();
+                            map.put("imageURL", mUri);
+                            reference.updateChildren(map);
+                        }
+                        else if(currentPhotoForUpload.equals("Photo2")){
+
+                        }
 
                         pd.dismiss();
                     }
