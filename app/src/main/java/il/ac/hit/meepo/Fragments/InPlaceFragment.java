@@ -60,7 +60,6 @@ public class InPlaceFragment extends Fragment {
 
     Place currentPlace;
 
-    boolean isAlreadyInMyConnection;
     boolean swipeBack;
     private static final String TAG = "InPlaceFragment";
 
@@ -156,70 +155,6 @@ public class InPlaceFragment extends Fragment {
             }
         });
 
-        //    userInPlaceAdapter.notifyItemRemoved(position);
-              //  userInPlaceAdapter.notifyItemRangeChanged(position, userInPlaceAdapter.getItemCount());
-
-                //
-
-//                alreadyDeltedFromList = false;
-//                reference = FirebaseDatabase.getInstance().getReference("Users").child(mFirebaseUser.getUid());
-//
-
-                //                reference.addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//
-//                        if(!listOfUsersInPlaceNow.isEmpty()) {
-//                            User thisUser = dataSnapshot.getValue(User.class);
-//                            List<String> myLikedUsers;
-//                            myLikedUsers = thisUser.getLikedByUserList();
-//                            if (position <= listOfUsersInPlaceNow.size() - 1 && !alreadyDeltedFromList) {
-//                                User likedOtherUser = listOfUsersInPlaceNow.get(position);
-//                                boolean alreadyLikedUser = false;
-//                                //match check
-//                                boolean isMatch = false;
-//                                for (String likesID : likedOtherUser.getLikedByUserList() // check if match
-//                                ) {
-//                                    if (thisUser.getId().equals(likesID) && !likesID.equals("default")) {
-//                                        isMatch = true; // TODO: MATCH (ADD MATCH)
-//                                        Log.d(TAG, "onDataChange: match!!!");
-//                                    }
-//                                }
-//                                for(int i = 0 ; i < myLikedUsers.size() ; i++){
-//                                    if(myLikedUsers.get(i).equals(likedOtherUser.getId()))
-//                                    {
-//                                        alreadyLikedUser = true;
-//                                    }
-//                                }
-
-                //
-//                                for (String likedBefore : myLikedUsers // check endless update
-//                                ) {
-//                                    if (likedOtherUser.getId().equals(likedBefore) ) {
-//                                        alreadyLikedUser = true;
-//                                    }
-//                                }
-//                                if (!alreadyLikedUser) {
-//                                    myLikedUsers.add(likedOtherUser.getId());
-//                                    HashMap<String, Object> hashMap = new HashMap<>();
-//                                    hashMap.put("likedByUserList", myLikedUsers);
-//                                    reference.updateChildren(hashMap);
-//                                }
-//                                if (!userInPlaceAdapter.users.isEmpty()) {
-//                                    userInPlaceAdapter.users.remove(position);
-//                                    userInPlaceAdapter.notifyItemRemoved(position);
-//                                    userInPlaceAdapter.notifyItemRangeChanged(position, userInPlaceAdapter.getItemCount());
-//                                    alreadyDeltedFromList = true;
-//                                }
-//                            }
-//                        }
-//                    }
-
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                    }
-//                });
 
         ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
         itemTouchhelper.attachToRecyclerView(recyclerView);
@@ -249,8 +184,10 @@ public class InPlaceFragment extends Fragment {
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()){
                     if(snapshot.exists()) {
                         User user = snapshot.getValue(User.class);
-                        if (!user.getId().equals(LogedInUserId) && user.getLastLocationPlaceId().equals(currentPlace.getmPlaceId()) && !inMyConnections(snapshot.getKey())){
-                            listOfUsersInPlaceNow.add(user);
+                        if (!user.getId().equals(LogedInUserId) && user.getLastLocationPlaceId().equals(currentPlace.getmPlaceId())){
+                           if(!(snapshot.child("connections").child("yeps").hasChild(currentUId) ||snapshot.child("connections").child("nope").hasChild(currentUId)) ) {
+                               listOfUsersInPlaceNow.add(user);
+                           }
                         }
                     }
                 }
@@ -279,41 +216,6 @@ public class InPlaceFragment extends Fragment {
         });
     }
 
-    private boolean inMyConnections(String otherUserUid) {
-        isAlreadyInMyConnection = false;
-        DatabaseReference currentUserConnectionDB = usersDb.child(currentUId).child("connections").child("yeps").child(otherUserUid);
-        currentUserConnectionDB.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()) {
-
-                    isAlreadyInMyConnection = true;
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-        currentUserConnectionDB = usersDb.child(currentUId).child("connections").child("nope").child(otherUserUid);
-        currentUserConnectionDB.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()) {
-
-                    isAlreadyInMyConnection = true;
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        return isAlreadyInMyConnection;
-    }
 
     private void isConnectionMatch(String otherUserUid){
         DatabaseReference currentUserConnectionDB = usersDb.child(currentUId).child("connections").child("yeps").child(otherUserUid);
