@@ -94,6 +94,16 @@ public class EditInfoActivity extends AppCompatActivity {
 
         mMainPhoto = findViewById(R.id.editinfo_main_photo);
         mMainPhotoEditor = findViewById(R.id.editinfo_edit_main_photo);
+        mPhoto2 = findViewById(R.id.editinfo_photo_2);
+        mPhoto2Editor = findViewById(R.id.imageView6);
+        mPhoto3 = findViewById(R.id.editinfo_photo_3);
+        mPhoto3Editor = findViewById(R.id.imageView8);
+        mPhoto4 = findViewById(R.id.edit_photo_4);
+        mPhoto4Editor = findViewById(R.id.imageView10);
+        mPhoto5 = findViewById(R.id.edit_photo_6);
+        mPhoto5Editor = findViewById(R.id.imageView11);
+        mPhoto6 = findViewById(R.id.edit_photo_5);
+        mPhoto6Editor = findViewById(R.id.imageView12);
 
         mAbout = findViewById(R.id.edit_info_about_text);
         mJobTitle = findViewById(R.id.edit_info_work_text);
@@ -108,6 +118,45 @@ public class EditInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 currentPhotoForUpload="MainPhoto";
+                openImage();
+            }
+        });
+
+        mPhoto2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentPhotoForUpload="Photo2";
+                openImage();
+            }
+        });
+        mPhoto3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentPhotoForUpload="Photo3";
+                openImage();
+            }
+        });
+
+        mPhoto4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentPhotoForUpload="Photo4";
+                openImage();
+            }
+        });
+
+        mPhoto5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentPhotoForUpload="Photo5";
+                openImage();
+            }
+        });
+
+        mPhoto6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentPhotoForUpload="Photo6";
                 openImage();
             }
         });
@@ -175,29 +224,43 @@ public class EditInfoActivity extends AppCompatActivity {
                     if(listOfImageUrl.get(i).equals("default")){
                         switch (i){
                             case 0:
-                                mMainPhoto.setImageResource(R.drawable.profile_image);
+                                mPhoto2.setImageResource(R.drawable.profile_image);
                                 break;
                             case 1:
+                                mPhoto3.setImageResource(R.drawable.profile_image);
                                 break;
                             case 2:
+                                mPhoto4.setImageResource(R.drawable.profile_image);
                                 break;
                             case 3:
+                                mPhoto5.setImageResource(R.drawable.profile_image);
                                 break;
                             case 4:
+                                mPhoto6.setImageResource(R.drawable.profile_image);
+                                break;
+                        }
+                    }else{
+                        switch (i){
+                            case 0:
+                                Glide.with(getApplicationContext()).load(listOfImageUrl.get(i)).centerCrop().into(mPhoto2);
+                                break;
+                            case 1:
+                                Glide.with(getApplicationContext()).load(listOfImageUrl.get(i)).centerCrop().into(mPhoto3);
+                                break;
+                            case 2:
+                                Glide.with(getApplicationContext()).load(listOfImageUrl.get(i)).centerCrop().into(mPhoto4);
+                                break;
+                            case 3:
+                                Glide.with(getApplicationContext()).load(listOfImageUrl.get(i)).centerCrop().into(mPhoto5);
+                                break;
+                            case 4:
+                                Glide.with(getApplicationContext()).load(listOfImageUrl.get(i)).centerCrop().into(mPhoto6);
                                 break;
                         }
                     }
                 }
 
-                for(String imageUrl: user.getImagesUrlList()){
-                    if(imageUrl.equals("default") ){
-                        mMainPhoto.setImageResource(R.mipmap.ic_launcher);
-                    }else{
 
-                        Glide.with(getApplicationContext()).load(user.getImageURL()).centerCrop().into(mMainPhoto);
-
-                    }
-                }
             }
 
             @Override
@@ -259,8 +322,35 @@ public class EditInfoActivity extends AppCompatActivity {
                             map.put("imageURL", mUri);
                             reference.updateChildren(map);
                         }
-                        else if(currentPhotoForUpload.equals("Photo2")){
+                        else{
+                            reference = FirebaseDatabase.getInstance().getReference("Users").child(userId);
+                            DatabaseReference refForImages = reference.child("imagesUrlList");
+                            HashMap<String, Object> map = new HashMap<>();
 
+                            if(currentPhotoForUpload.equals("Photo2")) {
+                                map.put("0", mUri);
+                                refForImages.updateChildren(map);
+                            }
+
+                            if(currentPhotoForUpload.equals("Photo3")) {
+                                map.put("1", mUri);
+                                refForImages.updateChildren(map);
+                            }
+
+                            if(currentPhotoForUpload.equals("Photo4")) {
+                                map.put("2", mUri);
+                                refForImages.updateChildren(map);
+                            }
+
+                            if(currentPhotoForUpload.equals("Photo5")) {
+                                map.put("3", mUri);
+                                refForImages.updateChildren(map);
+                            }
+
+                            if(currentPhotoForUpload.equals("Photo6")) {
+                                map.put("4", mUri);
+                                refForImages.updateChildren(map);
+                            }
                         }
 
                         pd.dismiss();
