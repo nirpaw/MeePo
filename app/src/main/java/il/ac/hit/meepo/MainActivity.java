@@ -161,8 +161,8 @@ public class MainActivity extends AppCompatActivity {
 
                // viewPagerAdapter.addFragment(new UsersFragment(), "Users");
 
-
-                viewPagerAdapter.addFragment(new MatchesFragment(), "Matches");
+                MatchesFragment matchesFragment = new MatchesFragment();
+                viewPagerAdapter.addFragment( matchesFragment, "Matches");
 
 
                 viewPager.setAdapter(viewPagerAdapter);
