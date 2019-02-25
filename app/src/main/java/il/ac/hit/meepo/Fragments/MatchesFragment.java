@@ -28,7 +28,7 @@ import il.ac.hit.meepo.R;
 public class MatchesFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private MatchesAdapter mMatchesAdapter  ;
+    private MatchesAdapter mMatchesAdapter;
     private RecyclerView.LayoutManager mMatchesLayoutManager ;
 
     private List<MatchesObject> resultMatches;
@@ -49,6 +49,8 @@ public class MatchesFragment extends Fragment {
         recyclerView.setAdapter(mMatchesAdapter);
 
         getUserMatchId();
+        mMatchesAdapter.notifyDataSetChanged();
+
 
         return view;
     }
@@ -77,7 +79,6 @@ public class MatchesFragment extends Fragment {
         userDB.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 if(dataSnapshot.exists()){
                     String userId = dataSnapshot.getKey();
                     String name = "";

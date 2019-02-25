@@ -276,8 +276,13 @@ public class InPlaceFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     Toast.makeText(getContext(), "MATCH", Toast.LENGTH_SHORT).show();
+
+                    String key = FirebaseDatabase.getInstance().getReference().child("NewChat").push().getKey();
                     usersDb.child(dataSnapshot.getKey()).child("connections").child("matches").child(currentUId).setValue("true");
+                    usersDb.child(dataSnapshot.getKey()).child("connections").child("matches").child(currentUId).child("ChatId").setValue(key);
                     usersDb.child(currentUId).child("connections").child("matches").child(dataSnapshot.getKey()).setValue("true");
+                    usersDb.child(currentUId).child("connections").child("matches").child(dataSnapshot.getKey()).child("ChatId").setValue(key);
+                    //TODO: MATCH NOTIFICATION UPDATE TO
                 }
             }
 
