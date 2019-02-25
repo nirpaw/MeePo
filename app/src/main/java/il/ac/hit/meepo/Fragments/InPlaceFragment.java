@@ -135,21 +135,28 @@ public class InPlaceFragment extends Fragment {
                 usersDb.child(stringOtherUserID).child("connections").child("nope").child(currentUId).setValue(true);
 
                 userInPlaceAdapter.users.remove(position);
-                userInPlaceAdapter.notifyItemRemoved(position);
-                userInPlaceAdapter.notifyItemRangeChanged(position, userInPlaceAdapter.getItemCount());
+                userInPlaceAdapter.notifyDataSetChanged();
+
+//                userInPlaceAdapter.notifyItemRemoved(position);
+//                userInPlaceAdapter.notifyItemRangeChanged(position, userInPlaceAdapter.getItemCount());
             }
 
             @Override
-            public void onLeftClicked(final int position) {
+            public void onLeftClicked(int position) {
                 // update
                 User objOtherUser = listOfUsersInPlaceNow.get(position);
                 String stringOtherUserID = objOtherUser.getId();
                 usersDb.child(stringOtherUserID).child("connections").child("yeps").child(currentUId).setValue(true);
-                isConnectionMatch(stringOtherUserID);
 
+                isConnectionMatch(stringOtherUserID);
                 userInPlaceAdapter.users.remove(position);
-                userInPlaceAdapter.notifyItemRemoved(position);
-                userInPlaceAdapter.notifyItemRangeChanged(position, userInPlaceAdapter.getItemCount());
+                userInPlaceAdapter.notifyDataSetChanged();
+
+            }
+        });
+
+        //    userInPlaceAdapter.notifyItemRemoved(position);
+              //  userInPlaceAdapter.notifyItemRangeChanged(position, userInPlaceAdapter.getItemCount());
 
                 //
 
@@ -212,8 +219,6 @@ public class InPlaceFragment extends Fragment {
 //
 //                    }
 //                });
-            }
-        });
 
         ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
         itemTouchhelper.attachToRecyclerView(recyclerView);
@@ -229,28 +234,54 @@ public class InPlaceFragment extends Fragment {
     private void setUsersDataAdapter() {
         Log.d(TAG, "setUsersDataAdapter: ");
 
+        // TODO: CHECK IF : DESIRBLE SEX , NOT ME , I CURRENT PLACE, NOT IN MY NOPS
         reference = mDataBase.getReference("Users");
         userInPlaceAdapter = new UserInPlaceAdapter(listOfUsersInPlaceNow);
         recyclerView.setAdapter(userInPlaceAdapter);
 
-        reference.addValueEventListener(new ValueEventListener() {
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onDataChange: ");
                 listOfUsersInPlaceNow.clear();
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()){
-                    User user = snapshot.getValue(User.class);
+                    if(snapshot.exists()) {
+                        User user = snapshot.getValue(User.class);
 
-                    if (!user.getId().equals(LogedInUserId) && user.getLastLocationPlaceId().equals(currentPlace.getmPlaceId())) {
-                        listOfUsersInPlaceNow.add(user);
-                        userInPlaceAdapter.notifyDataSetChanged();
+                        if (!user.getId().equals(LogedInUserId) && user.getLastLocationPlaceId().equals(currentPlace.getmPlaceId())) {
+                            listOfUsersInPlaceNow.add(user);
+                        }
                     }
                 }
+                userInPlaceAdapter.notifyDataSetChanged();
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
+
+        
+//        reference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                Log.d(TAG, "onDataChange: ");
+//                listOfUsersInPlaceNow.clear();
+//                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+//                    User user = snapshot.getValue(User.class);
+//
+//                    if (!user.getId().equals(LogedInUserId) && user.getLastLocationPlaceId().equals(currentPlace.getmPlaceId())) {
+//                        listOfUsersInPlaceNow.add(user);
+//                    }
+//                }
+//                userInPlaceAdapter.notifyDataSetChanged();
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
 
 
         userInPlaceAdapter.setListener(new UserInPlaceAdapter.MyUserInPlaceListener() {
@@ -258,7 +289,7 @@ public class InPlaceFragment extends Fragment {
             public void onUserClicked(int position, View view) {
                 Intent intent = new Intent(getContext(), OtherUserProfileActivity.class);
                 intent.putExtra("user_object" ,listOfUsersInPlaceNow.get(position));
-                watchOtherUserDeatails = true;
+                watchOtherUserDeatails = true;//TODO: DELETE THIS
                 startActivity(intent);
             }
 
