@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MeePo</string>
+    <string name="welcome_to_meepo">"ברוך הבא ל Meepo"</string>
+    <string name="sign_in">להתחבר</string>
+    <string name="sign_up">רישום</string>
+    <string name="login_email_address">איימיל</string>
+    <string name="forgot_your_password">האם שכתה סיסמא?</string>
+    <string name="create_account">ליצור משתמש חדש</string>
+    <string name="reset_password_comment">בלחיצה על הכפתור, תקבל איימיל לשינוי סיסמא</string>
+    <string name="reset_btn">שיחזור</string>
+    <string name="reset_email_address">איימיל</string>
+    <string name="editinfo_about_headline">אודות</string>
+    <string name="current_work">עיסוק נוחכי</string>
+    <string name="age_edit_info">גיל</string>
+    <string name="edit_info_gender">מין</string>
+    <string name="edit_info_male">זכר</string>
+    <string name="edit_info_female">נקבה</string>
+    <string name="login_password">סיסמא</string>
+    <string name="login_login">התחברות</string>
+    <string name="register_first_name">שם פרטי</string>
+    <string name="register_last_name">שם משפחה</string>
+    <string name="register_email_address">איימיל</string>
+    <string name="register_password">סיסמא</string>
+    <string name="register_about_yourself">אודות</string>
+    <string name="register_current_occupation">עיסוק נוחכי</string>
+    <string name="register_age">גיל</string>
+    <string name="register_looking_for">מחפש</string>
+    <string name="register_my_gender">מין שלי</string>
+    <string name="register_man">גבר</string>
+    <string name="register_woman">אישה</string>
+    <string name="register_male">זכר</string>
+    <string name="register_female">נקבה</string>
+    <string name="settings_discovery_settings">הגדרות חיפוש</string>
+    <string name="settings_my_current_locations">מיקום הנוכחי שלי</string>
+    <string name="settings_show_me">תראה לי</string>
+    <string name="settings_men">גברים</string>
+    <string name="settings_women">נשים</string>
+    <string name="settings_show_ages">תראה תווך גילים</string>
+    <string name="profile_edit_info">ערוך פרטים אישים</string>
+    <string name="profile_settings">הגדרות</string>
+</resources>
