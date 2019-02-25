@@ -1,5 +1,6 @@
 package il.ac.hit.meepo;
 
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +14,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +25,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import il.ac.hit.meepo.Models.User;
 
+import static java.security.AccessController.getContext;
+
 public class EditInfoActivity extends AppCompatActivity {
 
     private static final String TAG = "EditInfoActivity";
@@ -31,6 +35,7 @@ public class EditInfoActivity extends AppCompatActivity {
     private FirebaseUser firebaseUser;
     private DatabaseReference reference;
     private FirebaseDatabase mDatabase;
+
 
     private Toolbar mToolbar;
     private String userId;
@@ -60,12 +65,17 @@ public class EditInfoActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance();
         reference = mDatabase.getReference("Users");
 
+        mMainPhoto = findViewById(R.id.editinfo_main_photo);
+        mMainPhotoEditor = findViewById(R.id.editinfo_edit_main_photo);
+
         mAbout = findViewById(R.id.edit_info_about_text);
         mJobTitle = findViewById(R.id.edit_info_work_text);
         mAge = findViewById(R.id.edit_info_age_text);
         mGenderRadioGroup = findViewById(R.id.edit_info_gender_group);
         mMale = findViewById(R.id.edit_info_gender_radio_male);
         mFemale = findViewById(R.id.edit_info_gender_radio_female);
+
+
 
 
 
@@ -109,6 +119,27 @@ public class EditInfoActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         hideSoftKeyboard();
+
+        reference.child(userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                mUser = dataSnapshot.getValue(User.class);
+
+                if(user.getImageURL().equals("default")){
+                    mMainPhoto.setImageResource(R.mipmap.ic_launcher);
+                }else{
+
+                        Glide.with(getApplicationContext()).load(user.getImageURL()).centerCrop().into(mMainPhoto);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void hideSoftKeyboard(){
