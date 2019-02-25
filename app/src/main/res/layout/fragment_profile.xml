@@ -57,7 +57,7 @@
                 android:textColor="@color/colorPrimary"
                 android:layout_marginStart="65dp"
                 android:layout_marginTop="30dp"
-                android:text="EDIT INFO"
+                android:text="@string/profile_edit_info"
                 android:textSize="18sp"/>
 
             <TextView
@@ -69,7 +69,7 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="63dp"
                 android:textColor="@color/colorPrimary"
-                android:text="SETTINGS"
+                android:text="@string/profile_settings"
                 android:textSize="18sp" />
         </RelativeLayout>
 

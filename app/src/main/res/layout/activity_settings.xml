@@ -20,7 +20,7 @@
         android:layout_marginStart="23dp"
         android:layout_marginTop="41dp"
         android:layout_marginEnd="220dp"
-        android:text="Discovery Settings"
+        android:text="@string/settings_discovery_settings"
         android:textSize="20sp" />
 
     <TextView
@@ -33,7 +33,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="17dp"
         android:layout_marginEnd="32dp"
-        android:text="My Current Locations"
+        android:text="@string/settings_my_current_locations"
         android:textSize="18sp" />
 
     <TextView
@@ -46,7 +46,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="23dp"
         android:layout_marginEnd="304dp"
-        android:text="Show Me"
+        android:text="@string/settings_show_me"
         android:textSize="20sp" />
 
     <TextView
@@ -59,7 +59,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="179dp"
         android:layout_toStartOf="@+id/settings_male_sw"
-        android:text="Men"
+        android:text="@string/settings_men"
         android:textSize="18sp" />
 
     <TextView
@@ -72,7 +72,7 @@
         android:layout_marginTop="9dp"
         android:layout_marginEnd="181dp"
         android:layout_toStartOf="@+id/settings_female_sw"
-        android:text="Women"
+        android:text="@string/settings_women"
         android:textSize="18sp" />
 
     <Switch
@@ -104,7 +104,7 @@
         android:layout_marginTop="25dp"
         android:layout_marginEnd="160dp"
         android:layout_toStartOf="@+id/settings_search_age_range"
-        android:text="Show Ages"
+        android:text="@string/settings_show_ages"
         android:textSize="20sp" />
 
     <TextView

@@ -17,6 +17,34 @@
 
     <string name="sample_long_text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.</string>
     <string name="like">LIKE</string>
+    <string name="current_work">Current Work</string>
+    <string name="age_edit_info">Age</string>
+    <string name="edit_info_gender">Gender</string>
+    <string name="edit_info_male">male</string>
+    <string name="edit_info_female">female</string>
+    <string name="login_password">Password</string>
+    <string name="login_login">Login</string>
+    <string name="register_first_name">First name</string>
+    <string name="register_last_name">Last name</string>
+    <string name="register_email_address">Email Address</string>
+    <string name="register_password">Password</string>
+    <string name="register_about_yourself">About Yourself</string>
+    <string name="register_current_occupation">Current Occupation</string>
+    <string name="register_age">Age</string>
+    <string name="register_looking_for">Looking For</string>
+    <string name="register_my_gender">My Gender</string>
+    <string name="register_man">man</string>
+    <string name="register_woman">woman</string>
+    <string name="register_male">male</string>
+    <string name="register_female">female</string>
+    <string name="settings_discovery_settings">Discovery Settings</string>
+    <string name="settings_my_current_locations">My Current Locations</string>
+    <string name="settings_show_me">Show Me</string>
+    <string name="settings_men">Men</string>
+    <string name="settings_women">Women</string>
+    <string name="settings_show_ages">Show Ages</string>
+    <string name="profile_edit_info">EDIT INFO</string>
+    <string name="profile_settings">SETTINGS</string>
 
 
 </resources>

@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
 
-            android:hint="First name" />
+            android:hint="@string/register_first_name" />
     </android.support.design.widget.TextInputLayout>
 
 
@@ -50,7 +50,7 @@
             android:id="@+id/reg_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email Address"
+            android:hint="@string/register_email_address"
             android:inputType="textEmailAddress" />
     </android.support.design.widget.TextInputLayout>
 
@@ -70,7 +70,7 @@
             android:id="@+id/reg_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
+            android:hint="@string/register_password"
             android:inputType="textPassword" />
     </android.support.design.widget.TextInputLayout>
 
@@ -106,7 +106,7 @@
             android:id="@+id/reg_last_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Last name" />
+            android:hint="@string/register_last_name" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -124,7 +124,7 @@
             android:id="@+id/reg_about_yourself"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="About Yourself" />
+            android:hint="@string/register_about_yourself" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -142,7 +142,7 @@
             android:id="@+id/reg_jobtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Current Occupation" />
+            android:hint="@string/register_current_occupation" />
     </android.support.design.widget.TextInputLayout>
     <TextView
         android:id="@+id/reg_age"
@@ -152,7 +152,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="30dp"
         android:padding="10dp"
-        android:text="Age"
+        android:text="@string/register_age"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout6"/>
@@ -171,14 +171,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:text="Looking For"/>
+            android:text="@string/register_looking_for"/>
         <CheckBox
             android:id="@+id/reg_looking_for_male"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:padding="10dp"
-            android:text="man"
+            android:text="@string/register_man"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
         <CheckBox
@@ -187,7 +187,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:padding="10dp"
-            android:text="woman"
+            android:text="@string/register_woman"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
     </LinearLayout>
@@ -208,21 +208,21 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="My Gender"
+            android:text="@string/register_my_gender"
             android:layout_marginEnd="20dp"/>
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="30dp"
-            android:text="male"
+            android:text="@string/register_male"
             android:id="@+id/reg_gender_male"/>
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:text="female"
+            android:text="@string/register_female"
             android:id="@+id/reg_gender_female"/>
 
     </RadioGroup>

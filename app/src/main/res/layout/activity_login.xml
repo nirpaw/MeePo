@@ -49,7 +49,7 @@
             android:id="@+id/login_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
+            android:hint="@string/login_password"
             android:inputType="textPassword" />
     </android.support.design.widget.TextInputLayout>
 
@@ -62,7 +62,7 @@
         android:backgroundTint="@color/colorPrimary"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:text="Login"
+        android:text="@string/login_login"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

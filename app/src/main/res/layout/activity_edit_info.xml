@@ -190,7 +190,7 @@
                 android:layout_marginTop="208dp"
                 android:layout_marginEnd="225dp"
                 android:layout_marginBottom="0dp"
-                android:text="Current Work"
+                android:text="@string/current_work"
                 android:textSize="20sp" />
 
             <EditText
@@ -218,7 +218,7 @@
                 android:layout_marginTop="295dp"
                 android:layout_marginEnd="324dp"
                 android:layout_marginBottom="59dp"
-                android:text="Age"
+                android:text="@string/age_edit_info"
                 android:textSize="20sp" />
 
             <TextView
@@ -245,7 +245,7 @@
                 android:layout_marginTop="176dp"
                 android:layout_marginEnd="305dp"
                 android:layout_marginBottom="272dp"
-                android:text="Gender"
+                android:text="@string/edit_info_gender"
                 android:textSize="20sp" />
 
             <RadioGroup
@@ -265,14 +265,14 @@
                     android:id="@+id/edit_info_gender_radio_male"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="male"
+                    android:text="@string/edit_info_male"
                     android:textSize="18sp" />
 
                 <RadioButton
                     android:id="@+id/edit_info_gender_radio_female"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="female"
+                    android:text="@string/edit_info_female"
                     android:textSize="18sp" />
 
 
