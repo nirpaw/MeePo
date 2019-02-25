@@ -60,6 +60,7 @@ public class InPlaceFragment extends Fragment {
 
     Place currentPlace;
 
+    boolean isAlreadyInMyConnection;
     boolean swipeBack;
     private static final String TAG = "InPlaceFragment";
 
@@ -239,49 +240,27 @@ public class InPlaceFragment extends Fragment {
         userInPlaceAdapter = new UserInPlaceAdapter(listOfUsersInPlaceNow);
         recyclerView.setAdapter(userInPlaceAdapter);
 
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d(TAG, "onDataChange: ");
+
                 listOfUsersInPlaceNow.clear();
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()){
                     if(snapshot.exists()) {
                         User user = snapshot.getValue(User.class);
-
-                        if (!user.getId().equals(LogedInUserId) && user.getLastLocationPlaceId().equals(currentPlace.getmPlaceId())) {
+                        if (!user.getId().equals(LogedInUserId) && user.getLastLocationPlaceId().equals(currentPlace.getmPlaceId()) && !inMyConnections(snapshot.getKey())){
                             listOfUsersInPlaceNow.add(user);
                         }
                     }
                 }
                 userInPlaceAdapter.notifyDataSetChanged();
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
-
-        
-//        reference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                Log.d(TAG, "onDataChange: ");
-//                listOfUsersInPlaceNow.clear();
-//                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
-//                    User user = snapshot.getValue(User.class);
-//
-//                    if (!user.getId().equals(LogedInUserId) && user.getLastLocationPlaceId().equals(currentPlace.getmPlaceId())) {
-//                        listOfUsersInPlaceNow.add(user);
-//                    }
-//                }
-//                userInPlaceAdapter.notifyDataSetChanged();
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
 
 
         userInPlaceAdapter.setListener(new UserInPlaceAdapter.MyUserInPlaceListener() {
@@ -298,6 +277,42 @@ public class InPlaceFragment extends Fragment {
 
             }
         });
+    }
+
+    private boolean inMyConnections(String otherUserUid) {
+        isAlreadyInMyConnection = false;
+        DatabaseReference currentUserConnectionDB = usersDb.child(currentUId).child("connections").child("yeps").child(otherUserUid);
+        currentUserConnectionDB.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+
+                    isAlreadyInMyConnection = true;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        currentUserConnectionDB = usersDb.child(currentUId).child("connections").child("nope").child(otherUserUid);
+        currentUserConnectionDB.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+
+                    isAlreadyInMyConnection = true;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        return isAlreadyInMyConnection;
     }
 
     private void isConnectionMatch(String otherUserUid){
