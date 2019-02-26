@@ -48,6 +48,7 @@
     <string name="arena">Arena</string>
     <string name="demo_mode">Demo mode</string>
     <string name="you_have_no_matches_yet_never_give_up">You have no matches yet (Never give up)</string>
+    <string name="log_out">Log out</string>
 
 
 </resources>
