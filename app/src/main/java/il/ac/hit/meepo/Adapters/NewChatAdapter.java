@@ -55,6 +55,12 @@ import il.ac.hit.meepo.R;
                     Glide.with(context).load(imageUrl).into(holder.mProfileImage);
                 }
             }
+            if(holder.mTime != null){
+                holder.mTime.setText(chatList.get(position).getTime());
+            }
+            else {
+                holder.mTime.setText("No time");
+            }
     }
 
     @Override

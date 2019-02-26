@@ -13,6 +13,7 @@ public class ChatViewHolders extends RecyclerView.ViewHolder implements View.OnC
     public TextView mMessage;
     public LinearLayout mContainer;
     public ImageView mProfileImage;
+    public TextView mTime;
 
     public ChatViewHolders(View itemView) {
         super(itemView);
@@ -20,9 +21,15 @@ public class ChatViewHolders extends RecyclerView.ViewHolder implements View.OnC
         mMessage = itemView.findViewById(R.id.show_message);
         mContainer = itemView.findViewById(R.id.container);
         mProfileImage = itemView.findViewById(R.id.profile_image);
+        mTime = itemView.findViewById(R.id.txt_seen);
     }
 
     @Override
     public void onClick(View view) {
+        if( mTime.getVisibility() == View.VISIBLE) {
+            mTime.setVisibility(View.INVISIBLE);
+        }else {
+            mTime.setVisibility(View.VISIBLE);
+        }
     }
 }

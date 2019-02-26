@@ -150,9 +150,9 @@ public class MatchesFragment extends Fragment {
     private void showOrHideNoMatchesTv()
     {
         if(resultMatches.isEmpty())
-            NoMatchesTV.setEnabled(true);
+            NoMatchesTV.setVisibility(View.VISIBLE);
         else
-            NoMatchesTV.setEnabled(false);
+            NoMatchesTV.setVisibility(View.INVISIBLE);
 
     }
     private List<MatchesObject> getDataSetMatches(){

@@ -24,7 +24,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -175,12 +179,14 @@ public class NewChatActivity extends AppCompatActivity {
         String sendMessageText = mSendEditText.getText().toString();
 
         if(!sendMessageText.isEmpty()){
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+            Date date = new Date();
             DatabaseReference newMessageDb = mDatabaseChat.push();
 
             Map newMessage = new HashMap();
             newMessage.put("createdByUser", currentUserID);
             newMessage.put("text", sendMessageText);
-
+            newMessage.put("time", dateFormat.format(date));
             newMessageDb.setValue(newMessage);
         }
         mSendEditText.setText(null);
@@ -211,12 +217,16 @@ public class NewChatActivity extends AppCompatActivity {
                 if(dataSnapshot.exists()){
                     String message = null;
                     String createdByUser = null;
+                    String time = null;
 
                     if(dataSnapshot.child("text").getValue()!=null){
                         message = dataSnapshot.child("text").getValue().toString();
                     }
                     if(dataSnapshot.child("createdByUser").getValue()!=null){
                         createdByUser = dataSnapshot.child("createdByUser").getValue().toString();
+                    }
+                    if(dataSnapshot.child("time").getValue()!=null){
+                        time = dataSnapshot.child("time").getValue().toString();
                     }
 
                     if(message!=null && createdByUser!=null){
@@ -226,12 +236,12 @@ public class NewChatActivity extends AppCompatActivity {
                         }
                         NewChatObject newMessage;
                         if(!createdByUser.equals(currentUserID)){
-                            newMessage = new NewChatObject(message, currentUserBoolean, otherUserProfilePic);
+                            newMessage = new NewChatObject(message, currentUserBoolean, otherUserProfilePic,time );
                             Log.d(TAG, "onChildAdded: With pic : "+otherUserProfilePic);
 
                         }
                         else {
-                            newMessage = new NewChatObject(message, currentUserBoolean);
+                            newMessage = new NewChatObject(message, currentUserBoolean, time);
                             Log.d(TAG, "onChildAdded: Without pic");
 
                         }

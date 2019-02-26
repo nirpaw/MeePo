@@ -5,16 +5,28 @@ public class NewChatObject {
     private String message;
     private Boolean currentUser;
     private String profilePic;
-    public NewChatObject(String message, Boolean currentUser){
-        this.message = message;
-        this.currentUser = currentUser;
-        profilePic = null;
-    }
+    private String time;
 
-    public NewChatObject(String message, Boolean currentUser, String profilePic) {
+    public NewChatObject(String message, Boolean currentUser, String profilePic, String time) {
         this.message = message;
         this.currentUser = currentUser;
         this.profilePic = profilePic;
+        this.time = time;
+    }
+
+    public NewChatObject(String message, Boolean currentUser, String time) {
+        this.message = message;
+        this.currentUser = currentUser;
+        this.time = time;
+        this.profilePic = null;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public String getProfilePic() {
