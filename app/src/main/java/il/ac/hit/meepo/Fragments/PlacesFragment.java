@@ -132,6 +132,7 @@ public class PlacesFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
+                    //Dizzy Frishdon pub location 
                     userLat = 32.0811212;
                     userLng = 34.7737281;
                     listOfFoundedPlaces.clear();
