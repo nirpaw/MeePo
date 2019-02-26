@@ -201,10 +201,10 @@ public class InPlaceFragment extends Fragment {
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()){
                     if(snapshot.exists()) {
                         User user = snapshot.getValue(User.class);
-                        if (!user.getId().equals(LogedInUserId) && user.getLastLocationPlaceId().equals(currentPlace.getmPlaceId())) {
-                            if (!(snapshot.child("connections").child("yeps").hasChild(currentUId) || snapshot.child("connections").child("nope").hasChild(currentUId))) {
-                                listOfUsersInPlaceNow.add(user);
-                            }
+                            if (!user.getId().equals(LogedInUserId) && user.getLastLocationPlaceId().equals(currentPlace.getmPlaceId())) {
+                                if (!(snapshot.child("connections").child("yeps").hasChild(currentUId) || snapshot.child("connections").child("nope").hasChild(currentUId))) {
+                                    listOfUsersInPlaceNow.add(user);
+                                }
                         }
                     }
                 }
@@ -256,7 +256,7 @@ public class InPlaceFragment extends Fragment {
                     matchNotification.put("type","match");
 
                     mNotifReference.child(otherUserUid).push()
-                            .setValue(matchNotification).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    .setValue(matchNotification).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()){
