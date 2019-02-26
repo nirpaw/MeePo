@@ -178,8 +178,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-
     }
 
 
@@ -208,12 +206,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, StartActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
             finish();
         }
-        else if(item.getItemId() == R.id.main_settings_btn){
 
-        }
-        else if(item.getItemId() == R.id.main_all_users_btn){
-
-        }
         return true;
     }
 

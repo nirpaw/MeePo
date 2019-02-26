@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MeePo</string>
+    <string name="app_name" translatable="false">MeePo</string>
     <string name="welcome_to_meepo">Welcome to MeePo</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
@@ -49,6 +49,8 @@
     <string name="demo_mode">Demo mode</string>
     <string name="you_have_no_matches_yet_never_give_up">You have no matches yet (Never give up)</string>
     <string name="log_out">Log out</string>
+    <string name="unmatch">Unmatch</string>
+    <string name="enter_chat_message">Enter chat message...</string>
 
 
 </resources>

@@ -1,15 +1,21 @@
 package il.ac.hit.meepo;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.support.v7.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -23,7 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import il.ac.hit.meepo.Adapters.MatchesAdapter;
+import de.hdodenhof.circleimageview.CircleImageView;
 import il.ac.hit.meepo.Adapters.NewChatAdapter;
 import il.ac.hit.meepo.Models.NewChatObject;
 
@@ -41,17 +47,50 @@ public class NewChatActivity extends AppCompatActivity {
 
     private String otherUserProfilePic;
 
-    DatabaseReference mDatabaseUser, mDatabaseChat, mDatabaseOtherUser;
+    private String tbotherUserProfilePic;
+    private String OtherUserFirstName;
+
+
+    private TextView matchNameTv;
+    private CircleImageView matachImageCiv;
+    private Toolbar mToolbar;
+
+    private  boolean first = true;
+
+
+    DatabaseReference mDatabaseUser, mDatabaseChat, mDatabaseOtherUser, mDatabaseOtherUserPic;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_chat);
 
+        mToolbar = findViewById(R.id.toolbar_inchat);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("");
+
+
         matchId = getIntent().getExtras().getString("matchId");
+        OtherUserFirstName = getIntent().getExtras().getString("matchname");
 
         currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         mDatabaseOtherUser = FirebaseDatabase.getInstance().getReference().child("Users").child(matchId);
+        mDatabaseOtherUserPic = FirebaseDatabase.getInstance().getReference().child("Users").child(matchId).child("imageURL");
         mDatabaseUser = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID).child("connections").child("matches").child(matchId).child("ChatId");
+
+        mDatabaseOtherUserPic.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    tbotherUserProfilePic = dataSnapshot.getValue().toString();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         mDatabaseChat = FirebaseDatabase.getInstance().getReference().child("NewChat");
         mDatabaseOtherUser.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -68,6 +107,19 @@ public class NewChatActivity extends AppCompatActivity {
             }
         });
         getChatId();
+
+
+
+        matachImageCiv=findViewById(R.id.oprofile_image_chat);
+        matchNameTv = findViewById(R.id.tv_match_name_chat);
+
+//        if(tbotherUserProfilePic.equals("default")){
+//            // TODO: ADD SOME DEFAULT IMAGE
+//
+//        }else {
+//            Glide.with(this).load(tbotherUserProfilePic).into(matachImageCiv);
+//        }
+        matchNameTv.setText(OtherUserFirstName);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setNestedScrollingEnabled(false);
@@ -86,6 +138,28 @@ public class NewChatActivity extends AppCompatActivity {
                 sendMessage();
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_in_chat, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.item_unmatch_inchat) {
+            //UNMACH
+
+        }
+        return true;
+    }
+
+    @Override
+    public void setSupportActionBar(@Nullable android.support.v7.widget.Toolbar toolbar) {
+        super.setSupportActionBar(toolbar);
     }
 
     private void sendMessage() {
@@ -145,6 +219,7 @@ public class NewChatActivity extends AppCompatActivity {
                         if(!createdByUser.equals(currentUserID)){
                             newMessage = new NewChatObject(message, currentUserBoolean, otherUserProfilePic);
                             Log.d(TAG, "onChildAdded: With pic : "+otherUserProfilePic);
+
                         }
                         else {
                             newMessage = new NewChatObject(message, currentUserBoolean);

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MeePo</string>
     <string name="welcome_to_meepo">"ברוך הבא ל Meepo"</string>
     <string name="sign_in">להתחבר</string>
     <string name="sign_up">הרשם</string>
@@ -43,4 +42,6 @@
     <string name="arena">זירה</string>
     <string name="demo_mode">מצב הדגמה</string>
     <string name="you_have_no_matches_yet_never_give_up">אין לך עוד התאמות (אל תאמר נואש)</string>
+    <string name="log_out">התנתק</string>
+    <string name="unmatch">בטל התאמה</string>
 </resources>
