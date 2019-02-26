@@ -218,6 +218,7 @@ public class RegisterActivity extends AppCompatActivity {
                             arrayListUrls.add("default");
                             arrayListUrls.add("default");
                             hashMap.put("imagesUrlList",arrayListUrls);
+                            hashMap.put("lastLocationPlaceId","Not in place");
 
                             reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
