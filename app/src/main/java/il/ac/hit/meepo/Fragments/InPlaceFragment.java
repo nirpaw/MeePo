@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.flaviofaria.kenburnsview.KenBurnsView;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -55,7 +57,7 @@ public class InPlaceFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseUser mFirebaseUser;
     private FirebaseDatabase mDataBase;
-    private DatabaseReference reference;
+    private DatabaseReference reference, mNotifReference;
     private String LogedInUserId;
 
     DatabaseReference usersDb;
@@ -78,6 +80,7 @@ public class InPlaceFragment extends Fragment {
         // Inflate the layout for this fragment
         Log.d(TAG, "onCreateView:  start ");
         watchOtherUserDeatails = false;
+        mNotifReference = FirebaseDatabase.getInstance().getReference().child("Notifications");
 
         view = inflater.inflate(R.layout.fragment_in_place, container, false);
         recyclerView = view.findViewById(R.id.rv_users_in_place);
@@ -231,7 +234,7 @@ public class InPlaceFragment extends Fragment {
     }
 
 
-    private void isConnectionMatch(String otherUserUid){
+    private void isConnectionMatch(final String otherUserUid){
         DatabaseReference currentUserConnectionDB = usersDb.child(currentUId).child("connections").child("yeps").child(otherUserUid);
         currentUserConnectionDB.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -245,6 +248,24 @@ public class InPlaceFragment extends Fragment {
                     usersDb.child(currentUId).child("connections").child("matches").child(dataSnapshot.getKey()).setValue("true");
                     usersDb.child(currentUId).child("connections").child("matches").child(dataSnapshot.getKey()).child("ChatId").setValue(key);
                     //TODO: MATCH NOTIFICATION UPDATE TO
+
+
+
+                    HashMap<String, String> matchNotification = new HashMap<>();
+                    matchNotification.put("from", currentUId);
+                    matchNotification.put("type","match");
+
+                    mNotifReference.child(otherUserUid).push()
+                                    .setValue(matchNotification).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+
+                            }
+                        }
+                    });
+
+
                 }
             }
 

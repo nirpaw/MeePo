@@ -30,6 +30,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -52,7 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     //Firebase Auth
     private FirebaseAuth mAuth;
-    private DatabaseReference reference;
+    private DatabaseReference reference, mRefTokens;
 
 
     //ProgressDialog
@@ -67,6 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         mAuth = FirebaseAuth.getInstance();
+        mRefTokens = FirebaseDatabase.getInstance().getReference("Tokens");
 
         mFirstName = findViewById(R.id.reg_first_name);
         mLastName = findViewById(R.id.reg_last_name);
@@ -221,10 +223,24 @@ public class RegisterActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
-                                    Intent mainIntent = new Intent(RegisterActivity.this,MainActivity.class);
-                                    mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    startActivity(mainIntent);
-                                    finish();
+                                        String currentUserId = mAuth.getCurrentUser().getUid();
+                                        String deviceToken = FirebaseInstanceId.getInstance().getToken();
+                                        mRefTokens.child(currentUserId).child("device_token")
+                                                .setValue(deviceToken)
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if(task.isSuccessful()){
+                                                            Intent mainIntent = new Intent(RegisterActivity.this,MainActivity.class);
+                                                            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                            startActivity(mainIntent);
+                                                            finish();
+                                                        }
+                                                    }
+                                                });
+
+
+
                                     }
                                     else{
                                         Log.d(TAG, "onComplete: Something Get Wrong!");

@@ -17,6 +17,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -26,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     private Toolbar mToolbar;
 
     private FirebaseAuth mAuth;
+    private DatabaseReference mRefTokens;
 
     //ProgressDialog
     private ProgressDialog mLogProgress;
@@ -36,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
+        mRefTokens = FirebaseDatabase.getInstance().getReference("Tokens");
 
         mEmail = findViewById(R.id.login_email);
         mPassword = findViewById(R.id.login_password);
@@ -88,10 +93,22 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             mLogProgress.dismiss();
-                            Intent mainIntent = new Intent(LoginActivity.this,MainActivity.class);
-                            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(mainIntent);
-                            finish();
+                            String currentUserId = mAuth.getCurrentUser().getUid();
+                            String deviceToken = FirebaseInstanceId.getInstance().getToken();
+                            mRefTokens.child(currentUserId).child("device_token")
+                                    .setValue(deviceToken)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                Intent mainIntent = new Intent(LoginActivity.this,MainActivity.class);
+                                                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                startActivity(mainIntent);
+                                                finish();
+                                            }
+                                        }
+                                    });
+
 
                         } else {
                             mLogProgress.hide();
