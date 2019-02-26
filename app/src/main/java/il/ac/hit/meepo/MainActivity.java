@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
     static final int REQUEST_LOCATION = 9002;
     private static final String TAG = "MainActivity";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -175,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
 
 
 

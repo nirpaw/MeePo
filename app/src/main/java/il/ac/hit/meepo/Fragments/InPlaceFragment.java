@@ -117,9 +117,11 @@ public class InPlaceFragment extends Fragment {
 
     }
 
+
     @Override
     public void onPause() {
         super.onPause();
+        //TODO: DELETE ALL THIS S**T
         if(!watchOtherUserDeatails) {
             DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Users").child(mFirebaseUser.getUid());
             HashMap<String, Object> map = new HashMap<>();

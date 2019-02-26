@@ -46,6 +46,8 @@
     <string name="profile_settings">SETTINGS</string>
     <string name="where_are_you">Where are you?</string>
     <string name="arena">Arena</string>
+    <string name="demo_mode">Demo mode</string>
+    <string name="you_have_no_matches_yet_never_give_up">You have no matches yet (Never give up)</string>
 
 
 </resources>

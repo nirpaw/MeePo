@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -37,6 +38,7 @@ public class MatchesFragment extends Fragment {
 
     private List<MatchesObject> resultMatches;
 
+    private TextView noMatchesMessege;
     private  String cuurentUserId;
 
     @Nullable
@@ -51,6 +53,9 @@ public class MatchesFragment extends Fragment {
         resultMatches = new ArrayList<>();
         mMatchesAdapter = new MatchesAdapter(resultMatches, getContext());
         recyclerView.setAdapter(mMatchesAdapter);
+
+        TextView noMatchesTV = view.findViewById(R.id.tv_no_matches);
+
         getUserMatchId();
         DatabaseReference matchDB = FirebaseDatabase.getInstance().getReference().child("Users").child(cuurentUserId).child("connections");
         matchDB.addValueEventListener(new ValueEventListener() {
@@ -124,6 +129,11 @@ public class MatchesFragment extends Fragment {
                         Log.d(TAG, "onDataChange: resultMatches.add(object)");
                     }
                     mMatchesAdapter.notifyDataSetChanged();
+
+                    if(resultMatches.isEmpty())
+                        noMatchesMessege.setEnabled(true);
+                    else
+                        noMatchesMessege.setEnabled(false);
                 }
             }
 

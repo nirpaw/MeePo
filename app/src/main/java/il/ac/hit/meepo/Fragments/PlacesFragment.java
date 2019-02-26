@@ -13,8 +13,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -75,7 +78,7 @@ public class PlacesFragment extends Fragment {
     double userLat;
     double userLng;
     private SupportMapFragment mapFragment;
-
+    MainActivity activity;
     private GoogleMap mMap;
 
 
@@ -86,7 +89,7 @@ public class PlacesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        MainActivity activity = (MainActivity) getActivity();
+         activity = (MainActivity) getActivity();
         //firebase
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
@@ -124,30 +127,71 @@ public class PlacesFragment extends Fragment {
         listOfFoundedPlaces.clear();
         mTask.execute();
 
+        Switch aSwitch = view.findViewById(R.id.demo_switch);
+        aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    userLat = 32.0811212;
+                    userLng = 34.7737281;
+                    listOfFoundedPlaces.clear();
+                    mTask = new DownloadPlaces();
+                    mTask.execute();
+                    mapFragment = null;
+                    updateMapCam();
+                }
+                else{
+                    userLat = activity.getLat();
+                    userLng = activity.getLng();
+                    listOfFoundedPlaces.clear();
+                    mTask = new DownloadPlaces();
+                    mTask.execute();
+                    mapFragment = null;
+                    updateMapCam();
+                }
+            }
+        });
+        updateMapCam();
+        return view;
+    }
 
-
+    private void updateMapCam(){
         if (mapFragment == null) {
             mapFragment = SupportMapFragment.newInstance();
             mapFragment.getMapAsync(new OnMapReadyCallback() {
                 @Override
-                public void onMapReady(GoogleMap googleMap) {
-                    LatLng latLng = new LatLng(32.0811212,34.7737281); // TEL AVIV
-                 //   LatLng latLng = new LatLng(userLat, userLat); // REAL LOCATION
+                public void onMapReady(final GoogleMap googleMap) {
+                    LatLng targetedLatLng = new LatLng(userLat ,userLng - 0.0015);
+                    LatLng realLatLng = new LatLng(userLat ,userLng );
                     CameraPosition cameraPosition = new CameraPosition.Builder()
-                            .target(latLng)      // Sets the center of the map to Mountain View
+                            .target(targetedLatLng)      // Sets the center of the map to Mountain View
                             .zoom(17)                   // Sets the zoom
                             .bearing(90)                // Sets the orientation of the camera to east
                             .tilt(30)                   // Sets the tilt of the camera to 30 degrees
                             .build();                   // Creates a CameraPosition from the builder
                     googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                    googleMap.addMarker(new MarkerOptions().position(realLatLng));
+                    googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                        @Override
+                        public void onMapClick(LatLng latLng) {
+                            Log.d(TAG, "onMapClick: "+ latLng.toString());
+                            googleMap.clear();
+                            googleMap.addMarker(new MarkerOptions().position(latLng));
+                            userLat = latLng.latitude;
+                            userLng = latLng.longitude;
+                            listOfFoundedPlaces.clear();
+                            mTask = new DownloadPlaces();
+                            mTask.execute();
+
+                        }
+                    });
                 }
             });
         }
 
         getChildFragmentManager().beginTransaction().replace(R.id.map, mapFragment).commit();
-
-        return view;
     }
+
 
     class DownloadPlaces extends AsyncTask<String, Void, String> {
         @Override
@@ -156,8 +200,8 @@ public class PlacesFragment extends Fragment {
         }
 
         protected String doInBackground(String... args) {
-            // String placesUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+/*"32.0811212,34.7737281"+"32.063618,34.7727441"*/userLat+","+userLng  +"&types=bar"+"&radius=4000&key=" +getResources().getString(R.string.google_maps_api_key);
-            String placesUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+"32.0811212,34.7737281"+"&types=bar"+"&radius=4000&key=" +getResources().getString(R.string.google_maps_api_key);
+             String placesUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+userLat+","+userLng  +"&types=bar"+"&radius=500&key=" +getResources().getString(R.string.google_maps_api_key);
+            //String placesUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+"32.0811212,34.7737281"+"&types=bar"+"&radius=4000&key=" +getResources().getString(R.string.google_maps_api_key);
             Log.d(TAG, "debugUrl : "+placesUrl);
             String xml = "";
             String urlParameters = "";
