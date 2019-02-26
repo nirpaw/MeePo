@@ -44,6 +44,8 @@
     <string name="settings_show_ages">Show Ages</string>
     <string name="profile_edit_info">EDIT INFO</string>
     <string name="profile_settings">SETTINGS</string>
+    <string name="where_are_you">Where are you?</string>
+    <string name="arena">Arena</string>
 
 
 </resources>

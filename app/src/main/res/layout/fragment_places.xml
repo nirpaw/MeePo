@@ -18,6 +18,14 @@
             android:layout_height="wrap_content" />
 
     </LinearLayout>
+    <TextView
+        android:layout_marginTop="150dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/where_are_you"
+        android:textSize="30sp"
+        android:textStyle="italic"/>
 
         <Space
             android:id="@+id/space"

@@ -24,8 +24,7 @@
         <activity android:name=".NewChatActivity"></activity>
         <activity
             android:name=".OtherUserProfileActivity"
-            android:excludeFromRecents="true"
-            android:theme="@style/Theme.AppCompat.Dialog" />
+            android:excludeFromRecents="true" />
         <activity
             android:name=".InPlaceActivity"
             android:parentActivityName=".MainActivity" />

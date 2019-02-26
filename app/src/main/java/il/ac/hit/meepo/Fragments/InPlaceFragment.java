@@ -13,8 +13,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -83,6 +86,15 @@ public class InPlaceFragment extends Fragment {
         Bundle arguments = getArguments();
         currentPlace = (Place)arguments.getSerializable("currentPlace");
         listOfUsersInPlaceNow = new ArrayList<>();
+
+
+        String placeImgUrl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=" + currentPlace.getPhotoRefference() + "&key=" + getContext().getResources().getString(R.string.google_maps_api_key);
+        KenBurnsView kenBurnsView = view.findViewById(R.id.moveimage);
+        Glide.with(getContext()).load(placeImgUrl).into(kenBurnsView);
+
+        TextView placeTitle = view.findViewById(R.id.tV_place_name_inplace);
+        placeTitle.setText(currentPlace.getmPlaceName());
+
 
         setFireBaseDetails();
         setupRecyclerView();

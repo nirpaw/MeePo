@@ -124,12 +124,6 @@ public class PlacesFragment extends Fragment {
         listOfFoundedPlaces.clear();
         mTask.execute();
 
-//        ImageView mapImage = view.findViewById(R.id.iv_map);
-//        String imgUrl = "https://maps.googleapis.com/maps/api/staticmap?center="+userLat+"," +userLng+"&zoom=16&size=600x300&maptype=roadmap\n" +
-//                "&markers=color:blue%7Clabel:S%+" + userLat + ","+ userLng+
-//                "&key="+ getResources().getString(R.string.google_maps_api_key);
-//        Glide.with(this).load(imgUrl).into(mapImage);
-
 
 
         if (mapFragment == null) {
@@ -291,8 +285,6 @@ public class PlacesFragment extends Fragment {
         dist = dist * 60 * 1.1515;
         return dist;
     }
-
-
     /*::  This function converts decimal degrees to radians             :*/
     private double deg2rad(double deg) {
         return (deg * Math.PI / 180.0);

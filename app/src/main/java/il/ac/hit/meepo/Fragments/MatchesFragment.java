@@ -126,7 +126,7 @@ public class MatchesFragment extends Fragment {
                     mMatchesAdapter.notifyDataSetChanged();
                 }
             }
-            
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 

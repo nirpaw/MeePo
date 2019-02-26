@@ -2,10 +2,33 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.flaviofaria.kenburnsview.KenBurnsView
+        android:id="@+id/moveimage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+         />
+    <LinearLayout
+        android:padding="30dp"
+        android:gravity="center"
+        android:id="@+id/llinear"
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
+
+        <TextView
+            android:id="@+id/tV_place_name_inplace"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Place"
+            android:textSize="40sp"/>
+
+    </LinearLayout>
 
 
     <android.support.v7.widget.RecyclerView
+        android:layout_below="@id/llinear"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/rv_users_in_place"/>
