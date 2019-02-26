@@ -58,7 +58,7 @@ public class NewChatActivity extends AppCompatActivity {
     private  boolean first = true;
 
 
-    DatabaseReference mDatabaseUser, mDatabaseChat, mDatabaseOtherUser, mDatabaseOtherUserPic;
+    DatabaseReference mDatabaseUser, mDatabaseChat, mDatabaseOtherUser, mDatabaseOtherUserPic, usersDb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +73,8 @@ public class NewChatActivity extends AppCompatActivity {
         OtherUserFirstName = getIntent().getExtras().getString("matchname");
 
         currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
+
         mDatabaseOtherUser = FirebaseDatabase.getInstance().getReference().child("Users").child(matchId);
         mDatabaseOtherUserPic = FirebaseDatabase.getInstance().getReference().child("Users").child(matchId).child("imageURL");
         mDatabaseUser = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID).child("connections").child("matches").child(matchId).child("ChatId");
@@ -152,7 +154,7 @@ public class NewChatActivity extends AppCompatActivity {
         super.onOptionsItemSelected(item);
         if (item.getItemId() == R.id.item_unmatch_inchat) {
             //UNMACH
-
+            usersDb.child(currentUserID).child("connections").child("yeps").child(matchId).removeValue();
         }
         return true;
     }
