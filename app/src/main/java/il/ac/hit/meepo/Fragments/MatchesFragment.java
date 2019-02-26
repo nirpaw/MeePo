@@ -20,13 +20,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import il.ac.hit.meepo.Adapters.MatchesAdapter;
-import il.ac.hit.meepo.Adapters.UsersAdapter;
 import il.ac.hit.meepo.Models.MatchesObject;
 import il.ac.hit.meepo.R;
 
@@ -38,7 +34,7 @@ public class MatchesFragment extends Fragment {
 
     private List<MatchesObject> resultMatches;
 
-    private TextView noMatchesMessege;
+     TextView NoMatchesTV;
     private  String cuurentUserId;
 
     @Nullable
@@ -54,9 +50,11 @@ public class MatchesFragment extends Fragment {
         mMatchesAdapter = new MatchesAdapter(resultMatches, getContext());
         recyclerView.setAdapter(mMatchesAdapter);
 
-        TextView noMatchesTV = view.findViewById(R.id.tv_no_matches);
+        NoMatchesTV = view.findViewById(R.id.tv_no_matches);
+        showOrHideNoMatchesTv();
 
         getUserMatchId();
+
         DatabaseReference matchDB = FirebaseDatabase.getInstance().getReference().child("Users").child(cuurentUserId).child("connections");
         matchDB.addValueEventListener(new ValueEventListener() {
             @Override
@@ -130,10 +128,8 @@ public class MatchesFragment extends Fragment {
                     }
                     mMatchesAdapter.notifyDataSetChanged();
 
-                    if(resultMatches.isEmpty())
-                        noMatchesMessege.setEnabled(true);
-                    else
-                        noMatchesMessege.setEnabled(false);
+
+                    showOrHideNoMatchesTv();
                 }
             }
 
@@ -144,7 +140,14 @@ public class MatchesFragment extends Fragment {
         });
     }
 
-
+    private void showOrHideNoMatchesTv()
+    {
+        if(resultMatches.isEmpty())
+            NoMatchesTV.setEnabled(true);
+        else
+            NoMatchesTV.setEnabled(false);
+        
+    }
     private List<MatchesObject> getDataSetMatches(){
         return resultMatches;
     }
