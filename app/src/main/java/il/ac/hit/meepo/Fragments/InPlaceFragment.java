@@ -192,6 +192,7 @@ public class InPlaceFragment extends Fragment {
         userInPlaceAdapter = new UserInPlaceAdapter(listOfUsersInPlaceNow, getContext());
         recyclerView.setAdapter(userInPlaceAdapter);
 
+
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
