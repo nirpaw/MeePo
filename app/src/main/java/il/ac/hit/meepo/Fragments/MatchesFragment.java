@@ -146,7 +146,7 @@ public class MatchesFragment extends Fragment {
             NoMatchesTV.setEnabled(true);
         else
             NoMatchesTV.setEnabled(false);
-        
+
     }
     private List<MatchesObject> getDataSetMatches(){
         return resultMatches;

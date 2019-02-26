@@ -3,6 +3,7 @@ package il.ac.hit.meepo.Adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,6 +19,8 @@ import il.ac.hit.meepo.R;
  public class NewChatAdapter extends RecyclerView.Adapter<ChatViewHolders>{
     private List<NewChatObject> chatList;
 
+    public static final int MSG_TYPE_OTHER = 0;
+    public static final int MSG_TYPE_ME = 1;
     private Context context;
 
 
@@ -28,32 +31,35 @@ import il.ac.hit.meepo.R;
 
     @Override
     public ChatViewHolders onCreateViewHolder(ViewGroup parent, int viewType) {
-
-        View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_new_chat, null, false);
-        RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutView.setLayoutParams(lp);
-        ChatViewHolders rcv = new ChatViewHolders(layoutView);
-
-        return rcv;
+        View view;
+        if(viewType == MSG_TYPE_ME) {
+            view = LayoutInflater.from(context).inflate(R.layout.chat_item_right, parent, false);
+        }
+        else{
+            view = LayoutInflater.from(context).inflate(R.layout.chat_item_left, parent, false);
+        }
+        ChatViewHolders chatViewHolders = new ChatViewHolders(view);
+        return chatViewHolders;
     }
 
     @Override
-    public void onBindViewHolder(ChatViewHolders holder, int position) {
-        holder.mMessage.setText(chatList.get(position).getMessage());
-        if(chatList.get(position).getCurrentUser()){
-            holder.mMessage.setGravity(Gravity.END);
-            holder.mMessage.setTextColor(Color.parseColor("#404040"));
-            holder.mContainer.setBackgroundColor(Color.parseColor("#F4F4F4"));
-        }else{
-            holder.mMessage.setGravity(Gravity.START);
-            holder.mMessage.setTextColor(Color.parseColor("#FFFFFF"));
-            holder.mContainer.setBackgroundColor(Color.parseColor("#2DB4C8"));
-        }
-
+    public void onBindViewHolder(@NonNull  ChatViewHolders holder, int position) {
+            holder.mMessage.setText(chatList.get(position).getMessage());
     }
 
     @Override
     public int getItemCount() {
         return this.chatList.size();
     }
-}
+
+
+     @Override
+     public int getItemViewType(int position) {
+         if(chatList.get(position).getCurrentUser()){
+             return  MSG_TYPE_ME;
+         }
+         else {
+             return MSG_TYPE_OTHER;
+         }
+    }
+ }
