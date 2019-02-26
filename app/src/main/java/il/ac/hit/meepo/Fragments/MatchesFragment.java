@@ -59,8 +59,15 @@ public class MatchesFragment extends Fragment {
         matchDB.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                getUserMatchId();
+                if(dataSnapshot.child("matches").exists()) {
+                    getUserMatchId();
+                }
+                else {
+                    resultMatches.clear();
+                    mMatchesAdapter.notifyDataSetChanged();
+                }
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -74,7 +81,7 @@ public class MatchesFragment extends Fragment {
     private void getUserMatchId() {
         Log.d(TAG, "getUserMatchId: ");
         DatabaseReference matchDB = FirebaseDatabase.getInstance().getReference().child("Users").child(cuurentUserId).child("connections").child("matches") ;
-        matchDB.addListenerForSingleValueEvent(new ValueEventListener() {
+        matchDB.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d(TAG, "getUserMatchId, onDataChange: ");

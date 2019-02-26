@@ -154,9 +154,16 @@ public class NewChatActivity extends AppCompatActivity {
         super.onOptionsItemSelected(item);
         if (item.getItemId() == R.id.item_unmatch_inchat) {
             //UNMACH
-            usersDb.child(currentUserID).child("connections").child("yeps").child(matchId).removeValue();
+            onUnmatch();
         }
         return true;
+    }
+    private void onUnmatch(){
+        usersDb.child(currentUserID).child("connections").child("yeps").child(matchId).removeValue();
+        usersDb.child(matchId).child("connections").child("matches").child(currentUserID).removeValue();
+        usersDb.child(currentUserID).child("connections").child("matches").child(matchId).removeValue();
+        usersDb.child(matchId).child("connections").child("yeps").child(currentUserID).removeValue();
+        finish();
     }
 
     @Override
