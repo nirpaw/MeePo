@@ -1,9 +1,11 @@
 package il.ac.hit.meepo;
 
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,13 +32,16 @@ public class NewChatActivity extends AppCompatActivity {
     private RecyclerView.Adapter mChatAdapter;
     private RecyclerView.LayoutManager mChatLayoutManager;
 
+    private static final String TAG = "NewChatActivity";
     private EditText mSendEditText;
 
     private Button mSendButton;
 
     private String currentUserID, matchId, chatId;
 
-    DatabaseReference mDatabaseUser, mDatabaseChat;
+    private String otherUserProfilePic;
+
+    DatabaseReference mDatabaseUser, mDatabaseChat, mDatabaseOtherUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,10 +50,23 @@ public class NewChatActivity extends AppCompatActivity {
         matchId = getIntent().getExtras().getString("matchId");
 
         currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
+        mDatabaseOtherUser = FirebaseDatabase.getInstance().getReference().child("Users").child(matchId);
         mDatabaseUser = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID).child("connections").child("matches").child(matchId).child("ChatId");
         mDatabaseChat = FirebaseDatabase.getInstance().getReference().child("NewChat");
+        mDatabaseOtherUser.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    otherUserProfilePic = dataSnapshot.child("imageURL").getValue().toString();
+                    Log.d(TAG, "onDataChange: otherUserProfilePic seted  ");
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         getChatId();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -123,7 +141,16 @@ public class NewChatActivity extends AppCompatActivity {
                         if(createdByUser.equals(currentUserID)){
                             currentUserBoolean = true;
                         }
-                        NewChatObject newMessage = new NewChatObject(message, currentUserBoolean);
+                        NewChatObject newMessage;
+                        if(!createdByUser.equals(currentUserID)){
+                            newMessage = new NewChatObject(message, currentUserBoolean, otherUserProfilePic);
+                            Log.d(TAG, "onChildAdded: With pic : "+otherUserProfilePic);
+                        }
+                        else {
+                            newMessage = new NewChatObject(message, currentUserBoolean);
+                            Log.d(TAG, "onChildAdded: Without pic");
+
+                        }
                         resultsChat.add(newMessage);
                         mChatAdapter.notifyDataSetChanged();
                     }
