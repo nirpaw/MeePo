@@ -1,5 +1,6 @@
 package il.ac.hit.meepo;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.v7.widget.Toolbar;
 
@@ -36,6 +38,7 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 import il.ac.hit.meepo.Adapters.NewChatAdapter;
 import il.ac.hit.meepo.Models.NewChatObject;
+import il.ac.hit.meepo.Models.User;
 
 public class NewChatActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
@@ -45,7 +48,7 @@ public class NewChatActivity extends AppCompatActivity {
     private static final String TAG = "NewChatActivity";
     private EditText mSendEditText;
 
-    private Button mSendButton;
+    private ImageView mSendButton;
 
     private String currentUserID, matchId, chatId;
 
@@ -62,7 +65,7 @@ public class NewChatActivity extends AppCompatActivity {
     private  boolean first = true;
 
 
-    DatabaseReference mDatabaseUser, mDatabaseChat, mDatabaseOtherUser, mDatabaseOtherUserPic, usersDb;
+    DatabaseReference mDatabaseUser, mDatabaseChat, mDatabaseOtherUser, mDatabaseOtherUserPic, usersDb , sendMatchDB;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +91,7 @@ public class NewChatActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     tbotherUserProfilePic = dataSnapshot.getValue().toString();
+                    Log.d(TAG, "onDataChange: tbob" + tbotherUserProfilePic );
                 }
             }
 
@@ -103,6 +107,7 @@ public class NewChatActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     otherUserProfilePic = dataSnapshot.child("imageURL").getValue().toString();
+                    Glide.with(getApplicationContext()).load(tbotherUserProfilePic).into(matachImageCiv);
                     Log.d(TAG, "onDataChange: otherUserProfilePic seted  ");
                 }
             }
@@ -116,17 +121,33 @@ public class NewChatActivity extends AppCompatActivity {
 
 
 
-        matachImageCiv=findViewById(R.id.oprofile_image_chat);
+        matachImageCiv = findViewById(R.id.oprofile_image_chat);
         matchNameTv = findViewById(R.id.tv_match_name_chat);
-
-//        if(tbotherUserProfilePic.equals("default")){
-//            // TODO: ADD SOME DEFAULT IMAGE
-//
-//        }else {
-//            Glide.with(this).load(tbotherUserProfilePic).into(matachImageCiv);
-//        }
         matchNameTv.setText(OtherUserFirstName);
 
+        matachImageCiv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendMatchDB = FirebaseDatabase.getInstance().getReference("Users").child(matchId);
+                sendMatchDB.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.exists()) {
+                            User user = dataSnapshot.getValue(User.class);
+                            Intent intent = new Intent(NewChatActivity.this, OtherUserProfileActivity.class);
+                            intent.putExtra("user_object", user);
+                            startActivity(intent);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
+        Log.d(TAG, "onCreate: After glide " + tbotherUserProfilePic);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setHasFixedSize(false);
@@ -145,6 +166,7 @@ public class NewChatActivity extends AppCompatActivity {
             }
         });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -237,7 +259,7 @@ public class NewChatActivity extends AppCompatActivity {
                         NewChatObject newMessage;
                         if(!createdByUser.equals(currentUserID)){
                             newMessage = new NewChatObject(message, currentUserBoolean, otherUserProfilePic,time );
-                            Log.d(TAG, "onChildAdded: With pic : "+otherUserProfilePic);
+                            Log.d(TAG, "onChildAdded: With pic : "+ otherUserProfilePic);
 
                         }
                         else {

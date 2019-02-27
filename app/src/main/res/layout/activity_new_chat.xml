@@ -69,12 +69,13 @@
             android:layout_height="wrap_content"
             android:hint="@string/enter_chat_message"
             android:id="@+id/message"
-            />
-        <Button
+        />
+        <ImageView
+            android:background="@null"
+            android:src="@drawable/ic_action_name"
             android:layout_weight="0.2"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Send"
+            android:layout_height="match_parent"
             android:id="@+id/send"/>
     </LinearLayout>
 
