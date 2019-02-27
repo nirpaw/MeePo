@@ -218,8 +218,11 @@ public class InPlaceFragment extends Fragment {
                         User user = snapshot.getValue(User.class);
                             if (!user.getId().equals(LogedInUserId) && user.getLastLocationPlaceId().equals(currentPlace.getmPlaceId())) {
                                 if (!(snapshot.child("connections").child("yeps").hasChild(currentUId) || snapshot.child("connections").child("nope").hasChild(currentUId))) {
-                                    if(user.getGender().equals(dataSnapshot.child(currentUId).child("looking"))) {
+                                    Log.d(TAG, "other user gender " + user.getGender() +" | im looking : " +dataSnapshot.child(currentUId).child("looking").getValue().toString());
+                                    String myNewGender = user.getGender().equals("male") ? "men" : "women";
+                                    if(myNewGender.equals(dataSnapshot.child(currentUId).child("looking").getValue().toString())) {
                                         listOfUsersInPlaceNow.add(user);
+                                        Log.d(TAG, "added");
                                     }
                                 }
                         }
@@ -323,7 +326,7 @@ public class InPlaceFragment extends Fragment {
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
         pendingIntentNotif = PendingIntent.getBroadcast(getContext(),1, notificationIntent,PendingIntent.FLAG_UPDATE_CURRENT);
         long numberOfMinutes = 1;
-        final double futureInMillis = SystemClock.elapsedRealtime() + numberOfMinutes * 10000;
+        final double futureInMillis = SystemClock.elapsedRealtime() + numberOfMinutes * 4000;
         alarmManager = (AlarmManager)getContext().getSystemService(Context.ALARM_SERVICE);
 
 

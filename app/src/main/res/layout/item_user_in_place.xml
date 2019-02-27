@@ -72,7 +72,7 @@
             android:layout_marginTop="7dp"
             android:layout_toEndOf="@id/profile_image"
             android:maxLines="1"
-            android:text="[Last seen]"
+            android:text=" "
             android:textSize="18sp" />
     </RelativeLayout>
 </android.support.v7.widget.CardView>
