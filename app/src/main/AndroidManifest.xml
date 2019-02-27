@@ -21,7 +21,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NewChatActivity"></activity>
+
+        <activity android:name=".NewChatActivity" />
         <activity
             android:name=".OtherUserProfileActivity"
             android:excludeFromRecents="true" />
@@ -57,22 +58,31 @@
             android:parentActivityName=".StartActivity" />
         <activity android:name=".StartActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
         </activity>
         <activity android:name=".MessageActivity" />
         <activity android:name=".MainActivity" />
+
 
         <service
             android:name=".MyInstanceIDListenerService"
             android:permission="false">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <activity android:name=".SplashScreenActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
