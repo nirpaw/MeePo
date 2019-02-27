@@ -213,7 +213,7 @@ public class EditInfoActivity extends AppCompatActivity {
                 mUser = dataSnapshot.getValue(User.class);
 
                 if(user.getImageURL().equals("default") ){
-                    mMainPhoto.setImageResource(R.mipmap.ic_launcher);
+                    mMainPhoto.setImageResource(R.drawable.profile_image);
                 }else{
 
                     Glide.with(getApplicationContext()).load(user.getImageURL()).centerCrop().into(mMainPhoto);

@@ -50,7 +50,7 @@ import il.ac.hit.meepo.R;
             String imageUrl = chatList.get(position).getProfilePic();
             if(imageUrl != null) {
                 if (imageUrl.equals("default")) {
-                    holder.mProfileImage.setImageResource(R.mipmap.ic_launcher);
+                    holder.mProfileImage.setImageResource(R.drawable.profile_image);
                 } else {
                     Glide.with(context).load(imageUrl).into(holder.mProfileImage);
                 }

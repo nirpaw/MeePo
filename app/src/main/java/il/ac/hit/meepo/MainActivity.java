@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                     username.setText(user.getFirstName());
 
                     if(user.getImageURL().equals("default")){
-                        profile_image.setImageResource(R.mipmap.ic_launcher);
+                        profile_image.setImageResource(R.drawable.profile_image);
                     }
                     else{
                         Glide.with(getApplicationContext())
@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
                 placesFragment.setArguments(bundle);
 
                 ContainerFragment containerFragment = new ContainerFragment();
-                viewPagerAdapter.addFragment(containerFragment, "Places");
+                viewPagerAdapter.addFragment(containerFragment, "Check-In");
 
 
                 //viewPagerAdapter.addFragment(placesFragment, "Places");

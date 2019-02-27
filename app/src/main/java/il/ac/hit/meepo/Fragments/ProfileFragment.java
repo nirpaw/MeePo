@@ -88,12 +88,12 @@ public class ProfileFragment extends Fragment {
 
                 username.setText(user.getFirstName()+ ", " + user.getAge());
                 if(user.getImageURL().equals("default")){
-                    image_profile.setImageResource(R.mipmap.ic_launcher);
+                    image_profile.setImageResource(R.drawable.profile_image);
                 }else{
                     if(getContext() != null)
                         Glide.with(getContext()).load(user.getImageURL()).into(image_profile);
                     else
-                        image_profile.setImageResource(R.mipmap.ic_launcher);
+                        image_profile.setImageResource(R.drawable.profile_image);
                 }
             }
 
