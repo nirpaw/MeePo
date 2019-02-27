@@ -1,11 +1,18 @@
 package il.ac.hit.meepo.Fragments;
 
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -35,10 +42,14 @@ import java.util.List;
 import il.ac.hit.meepo.Adapters.UserInPlaceAdapter;
 import il.ac.hit.meepo.Helpers.SwipeController;
 import il.ac.hit.meepo.Helpers.SwipeControllerActions;
+import il.ac.hit.meepo.MainActivity;
 import il.ac.hit.meepo.Models.Place;
 import il.ac.hit.meepo.Models.User;
+import il.ac.hit.meepo.NotificationPublisher;
 import il.ac.hit.meepo.OtherUserProfileActivity;
 import il.ac.hit.meepo.R;
+
+import static android.content.Context.NOTIFICATION_SERVICE;
 
 
 /**
@@ -59,6 +70,9 @@ public class InPlaceFragment extends Fragment {
     private FirebaseDatabase mDataBase;
     private DatabaseReference reference, mNotifReference;
     private String LogedInUserId;
+
+    PendingIntent pendingIntentNotif;
+    AlarmManager alarmManager;
 
     DatabaseReference usersDb;
     String currentUId;
@@ -252,6 +266,8 @@ public class InPlaceFragment extends Fragment {
 
 
 
+
+
                     HashMap<String, String> matchNotification = new HashMap<>();
                     matchNotification.put("from", currentUId);
                     matchNotification.put("type","match");
@@ -266,6 +282,10 @@ public class InPlaceFragment extends Fragment {
                         }
                     });
 
+                    notification();
+
+
+
 
                 }
             }
@@ -275,5 +295,42 @@ public class InPlaceFragment extends Fragment {
 
             }
         });
+    }
+
+    void notification(){
+        String CHANEL_ID = "NEWS";
+        CharSequence name = getString(R.string.app_name);
+        int importance = NotificationManager.IMPORTANCE_HIGH;
+
+        final NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), CHANEL_ID);
+        builder.setSmallIcon(android.R.drawable.star_on)
+                .setContentTitle("Match")
+                .setContentText("Body")
+                .setChannelId(CHANEL_ID);
+
+        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+
+        Intent intent = new Intent(getContext(), MainActivity.class);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(pendingIntent);
+
+        Notification notification = builder.build();
+        notification.defaults = Notification.DEFAULT_SOUND;
+        notification.flags |= Notification.FLAG_AUTO_CANCEL;
+
+        NotificationManager manager = (NotificationManager)getContext().getSystemService(NOTIFICATION_SERVICE);
+
+
+        Intent notificationIntent = new Intent(getContext(), NotificationPublisher.class);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
+        pendingIntentNotif = PendingIntent.getBroadcast(getContext(),1, notificationIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        long numberOfMinutes = 1;
+        final double futureInMillis = SystemClock.elapsedRealtime() + numberOfMinutes * 10000;
+        alarmManager = (AlarmManager)getContext().getSystemService(Context.ALARM_SERVICE);
+
+
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,(long)futureInMillis,pendingIntentNotif);
     }
 }
