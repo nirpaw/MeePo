@@ -3,6 +3,7 @@ package il.ac.hit.meepo;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.support.v7.widget.Toolbar;
 
@@ -58,10 +60,11 @@ public class NewChatActivity extends AppCompatActivity {
     private String OtherUserFirstName;
 
 
+
     private TextView matchNameTv;
     private CircleImageView matachImageCiv;
     private Toolbar mToolbar;
-
+    private NestedScrollView scrollView;
     private  boolean first = true;
 
 
@@ -74,7 +77,7 @@ public class NewChatActivity extends AppCompatActivity {
         mToolbar = findViewById(R.id.toolbar_inchat);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("");
-
+        scrollView = findViewById(R.id.nested_scroll_view);
 
         matchId = getIntent().getExtras().getString("matchId");
         OtherUserFirstName = getIntent().getExtras().getString("matchname");
@@ -269,6 +272,7 @@ public class NewChatActivity extends AppCompatActivity {
                         }
                         resultsChat.add(newMessage);
                         mChatAdapter.notifyDataSetChanged();
+                        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
                     }
                 }
 

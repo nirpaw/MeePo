@@ -265,9 +265,6 @@ public class InPlaceFragment extends Fragment {
                     //TODO: MATCH NOTIFICATION UPDATE TO
 
 
-
-
-
                     HashMap<String, String> matchNotification = new HashMap<>();
                     matchNotification.put("from", currentUId);
                     matchNotification.put("type","match");
@@ -283,9 +280,6 @@ public class InPlaceFragment extends Fragment {
                     });
 
                     notification();
-
-
-
 
                 }
             }
