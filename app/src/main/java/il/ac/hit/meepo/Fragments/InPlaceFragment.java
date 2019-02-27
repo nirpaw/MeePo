@@ -70,11 +70,13 @@ public class InPlaceFragment extends Fragment {
     private FirebaseDatabase mDataBase;
     private DatabaseReference reference, mNotifReference;
     private String LogedInUserId;
+    private String name="";
+
 
     PendingIntent pendingIntentNotif;
     AlarmManager alarmManager;
 
-    DatabaseReference usersDb;
+    DatabaseReference usersDb, otherUserDb;
     String currentUId;
 
     Place currentPlace;
@@ -95,6 +97,7 @@ public class InPlaceFragment extends Fragment {
         Log.d(TAG, "onCreateView:  start ");
         watchOtherUserDeatails = false;
         mNotifReference = FirebaseDatabase.getInstance().getReference().child("Notifications");
+        otherUserDb = FirebaseDatabase.getInstance().getReference().child("Users");
 
         view = inflater.inflate(R.layout.fragment_in_place, container, false);
         recyclerView = view.findViewById(R.id.rv_users_in_place);
@@ -120,7 +123,7 @@ public class InPlaceFragment extends Fragment {
         //update
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
         currentUId = mAuth.getCurrentUser().getUid();
-        //
+
 
         return view;
     }
@@ -268,6 +271,19 @@ public class InPlaceFragment extends Fragment {
                     usersDb.child(currentUId).child("connections").child("matches").child(dataSnapshot.getKey()).setValue("true");
                     usersDb.child(currentUId).child("connections").child("matches").child(dataSnapshot.getKey()).child("ChatId").setValue(key);
                     //TODO: MATCH NOTIFICATION UPDATE TO
+                    otherUserDb.child(otherUserUid).child("firstName").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            name = dataSnapshot.getValue().toString();
+                            Log.d(TAG, "onDataChange: MATCH" + name);
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
 
 
                     HashMap<String, String> matchNotification = new HashMap<>();
@@ -284,7 +300,9 @@ public class InPlaceFragment extends Fragment {
                         }
                     });
 
-                    notification();
+                    notification(name);
+
+            //        notification(name);
 
                 }
             }
@@ -296,7 +314,7 @@ public class InPlaceFragment extends Fragment {
         });
     }
 
-    void notification(){
+    void notification(String body){
         String CHANEL_ID = "NEWS";
         CharSequence name = getString(R.string.app_name);
         int importance = NotificationManager.IMPORTANCE_HIGH;
@@ -304,7 +322,7 @@ public class InPlaceFragment extends Fragment {
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), CHANEL_ID);
         builder.setSmallIcon(android.R.drawable.star_on)
                 .setContentTitle("Match")
-                .setContentText("Body")
+                .setContentText(body)
                 .setChannelId(CHANEL_ID);
 
         builder.setPriority(NotificationCompat.PRIORITY_HIGH);
