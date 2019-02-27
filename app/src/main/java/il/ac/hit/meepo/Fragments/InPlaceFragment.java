@@ -218,7 +218,9 @@ public class InPlaceFragment extends Fragment {
                         User user = snapshot.getValue(User.class);
                             if (!user.getId().equals(LogedInUserId) && user.getLastLocationPlaceId().equals(currentPlace.getmPlaceId())) {
                                 if (!(snapshot.child("connections").child("yeps").hasChild(currentUId) || snapshot.child("connections").child("nope").hasChild(currentUId))) {
-                                    listOfUsersInPlaceNow.add(user);
+                                    if(user.getGender().equals(dataSnapshot.child(currentUId).child("looking"))) {
+                                        listOfUsersInPlaceNow.add(user);
+                                    }
                                 }
                         }
                     }
