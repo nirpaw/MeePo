@@ -276,6 +276,7 @@ public class InPlaceFragment extends Fragment {
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             name = dataSnapshot.getValue().toString();
                             Log.d(TAG, "onDataChange: MATCH" + name);
+                            notification(name);
 
                         }
 
@@ -300,7 +301,7 @@ public class InPlaceFragment extends Fragment {
                         }
                     });
 
-                    notification(name);
+
 
             //        notification(name);
 
