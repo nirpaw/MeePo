@@ -128,28 +128,28 @@ public class NewChatActivity extends AppCompatActivity {
         matchNameTv = findViewById(R.id.tv_match_name_chat);
         matchNameTv.setText(OtherUserFirstName);
 
-        matachImageCiv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendMatchDB = FirebaseDatabase.getInstance().getReference("Users").child(matchId);
-                sendMatchDB.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.exists()) {
-                            User user = dataSnapshot.getValue(User.class);
-                            Intent intent = new Intent(NewChatActivity.this, OtherUserProfileActivity.class);
-                            intent.putExtra("user_object", user);
-                            startActivity(intent);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-            }
-        });
+//        matachImageCiv.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                sendMatchDB = FirebaseDatabase.getInstance().getReference("Users").child(matchId);
+//                sendMatchDB.addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                        if(dataSnapshot.exists()) {
+//                            User user = dataSnapshot.getValue(User.class);
+//                            Intent intent = new Intent(NewChatActivity.this, OtherUserProfileActivity.class);
+//                            intent.putExtra("user_object", user);
+//                            startActivity(intent);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                    }
+//                });
+//            }
+//        });
         Log.d(TAG, "onCreate: After glide " + tbotherUserProfilePic);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setNestedScrollingEnabled(false);
