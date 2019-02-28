@@ -59,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
     //ProgressDialog
     private ProgressDialog mRegProgress;
 
-    private String currentAge;
+    private String currentAge="";
 
 
     @Override

@@ -1,10 +1,12 @@
 package il.ac.hit.meepo;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -39,6 +42,7 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -66,6 +70,7 @@ public class EditInfoActivity extends AppCompatActivity {
 
     private EditText mAbout, mJobTitle;
     private TextView mAge;
+    private String currentAge="";
 
     private RadioGroup mGenderRadioGroup;
     private RadioButton mMale, mFemale;
@@ -78,6 +83,8 @@ public class EditInfoActivity extends AppCompatActivity {
     private StorageTask uploadTask;
 
     private String currentPhotoForUpload = "";
+
+    private ProgressDialog mLogProgress;
 
 
     @Override
@@ -111,6 +118,74 @@ public class EditInfoActivity extends AppCompatActivity {
         mGenderRadioGroup = findViewById(R.id.edit_info_gender_group);
         mMale = findViewById(R.id.edit_info_gender_radio_male);
         mFemale = findViewById(R.id.edit_info_gender_radio_female);
+        mSaveBtn = findViewById(R.id.edit_info_save_btn);
+
+        mAge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(EditInfoActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+
+                                currentAge = getAge(year,month,day) + "";
+                                mAge.setText(currentAge);
+
+                            }
+                        }, year, month, dayOfMonth);
+                datePickerDialog.show();
+
+            }
+        });
+
+        mSaveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: Save Btn");
+
+                reference = FirebaseDatabase.getInstance().getReference("Users").child(userId);
+                HashMap<String, Object> map = new HashMap<>();
+                String age = mAge.getText().toString();
+                if(!age.isEmpty())
+                    map.put("age", age);
+                String about = mAbout.getText().toString();
+                String currentJob= mJobTitle.getText().toString();
+
+                if(!about.isEmpty())
+                    map.put("about", about);
+                if (!currentJob.isEmpty()){
+                    map.put("jobtitle", currentJob);
+                }
+
+                if(map.size()>0) {
+                    mLogProgress = new ProgressDialog(EditInfoActivity.this);
+                    mLogProgress.setTitle("Saving");
+                    mLogProgress.setMessage("Please wait while saving...");
+                    mLogProgress.setCanceledOnTouchOutside(false);;
+                    mLogProgress.show();
+                    reference.updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                mLogProgress.dismiss();
+                                Toast.makeText(EditInfoActivity.this, "Saved Successfully", Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                mLogProgress.dismiss();
+                            }
+                        }
+                    });
+                }
+
+            }
+        });
+
 
 
 
@@ -268,6 +343,8 @@ public class EditInfoActivity extends AppCompatActivity {
 
             }
         });
+
+
     }
 
     private void hideSoftKeyboard(){
@@ -371,6 +448,27 @@ public class EditInfoActivity extends AppCompatActivity {
             Toast.makeText(EditInfoActivity.this, "No image selected", Toast.LENGTH_SHORT).show();
             pd.dismiss();
         }
+
+
+
+    }
+
+    private String getAge(int year, int month, int day){
+        Calendar dob = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+
+        dob.set(year, month, day);
+
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)){
+            age--;
+        }
+
+        Integer ageInt = new Integer(age);
+        String ageS = ageInt.toString();
+
+        return ageS;
     }
 
     @Override
